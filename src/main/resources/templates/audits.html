@@ -1,10 +1,13 @@
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
     <head>
         <title>Audit</title>
         <meta charset="UTF-8"/>
     </head>
     <body>
-        <table border="1" width="90%">
+        <form action="#" th:action="@{/audits/form}" method="GET">
+            <input type="submit" value="Tambah Data" align="center"/>
+        </form>
+        <table border="1" width="90%" align="center">
             <tr>
                 <th>Tahun Audit</th>
                 <th>Auditor</th>
@@ -20,6 +23,7 @@
                 <th>Reschedule I</th>
                 <th>Reschedule II</th>
                 <th>Status</th>
+                <th>Action</th>
             </tr>
             <tr th:each="audit : ${audits}">
                 <td th:text="${audit.auditYear}">tahun audit</td>
@@ -36,6 +40,9 @@
                 <td th:text="${audit.firstRescheduled}">firstRescheduled</td>
                 <td th:text="${audit.secondRescheduled}">secondRescheduled</td>
                 <td th:text="${audit.status}">status</td>
+                <td><a th:href="${'/audits/' + audit.id}+ '/view'">Edit</a> |
+                    <a th:href="${'/audits/' + audit.id}+ '/delete'">Edit</a>
+                </td>
             </tr>
         </table>
     </body>

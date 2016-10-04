@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -56,14 +57,14 @@ public class AuditController {
         model.addAttribute("audits", audits);
     }
 
-    /*@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/view", method = RequestMethod.GET)
     public String findById(@PathVariable("id") String id, Model model) {
         Audit audit = auditService.findById(id);
         model.addAttribute("audit", audit);
-        return "auditShow";
+        return "form";
     }
 
-    @RequestMapping(value = "/delete/{id}")
+    @RequestMapping(value = "/{id}/delete")
     public String delete(@PathVariable("id") String id) {
         Audit audit = auditDao.findOne(id);
 
@@ -72,6 +73,6 @@ public class AuditController {
             auditDao.save(audit);
         }
 
-        return "index";
-    }*/
+        return "redirect:/audits";
+    }
 }
