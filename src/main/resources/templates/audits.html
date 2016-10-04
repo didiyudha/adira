@@ -2,12 +2,13 @@
     <head>
         <title>Audit</title>
         <meta charset="UTF-8"/>
+        <link rel="stylesheet" th:href="@{/css/style.css}" href="../../css/style.css" />
     </head>
     <body>
         <form action="#" th:action="@{/audits/form}" method="GET">
             <input type="submit" value="Tambah Data" align="center"/>
         </form>
-        <table border="1" width="90%" align="center">
+        <table>
             <tr>
                 <th>Tahun Audit</th>
                 <th>Auditor</th>
@@ -41,7 +42,7 @@
                 <td th:text="${audit.secondRescheduled}">secondRescheduled</td>
                 <td th:text="${audit.status}">status</td>
                 <td><a th:href="${'/audits/' + audit.id}+ '/view'">Edit</a> |
-                    <a th:href="${'/audits/' + audit.id}+ '/delete'">Edit</a>
+                    <a th:href="${'/audits/' + audit.id}+ '/delete'">Delete</a>
                 </td>
             </tr>
         </table>

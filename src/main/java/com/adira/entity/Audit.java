@@ -3,6 +3,7 @@ package com.adira.entity;
 import com.adira.enumeration.RiskLevel;
 import com.adira.enumeration.Status;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -62,10 +63,12 @@ public class Audit {
     private Date firstRescheduled;
 
     @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "second_rescheduled")
     private Date secondRescheduled;
 
     @Column(name = "deleted", nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private boolean deleted = false;
 
     public Audit() {

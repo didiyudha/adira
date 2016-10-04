@@ -3,97 +3,65 @@
 <head>
     <title>Form Data Audit</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/form.css}" href="../../css/form.css" />
 </head>
 <body>
+<h2>Form Data Audit</h2>
 <form action="#" th:action="@{/audits/form}" th:object="${audit}" method="post">
     <input type="hidden" th:field="*{id}"/>
-    <table border="1">
-        <tr>
-            <td>Tahun Audit:</td>
-            <td>
-                <input type="text" th:value="${#dates.year(#dates.createNow())}" th:name="auditYear" />
-            </td>
-        </tr>
-        <tr>
-            <td>Auditor:</td>
-            <td><input type="text" th:field="*{auditor}" /></td>
-            <td th:if="${#fields.hasErrors('auditor')}" th:errors="*{auditor}">Auditor Error</td>
-        </tr>
-        <tr>
-            <td>Domain:</td>
-            <td><input type="text" th:field="*{domain}" /></td>
-            <td th:if="${#fields.hasErrors('domain')}" th:errors="*{domain}">Domain Error</td>
-        </tr>
-        <tr>
-            <td>Unit:</td>
-            <td><input type="text" th:field="*{unit}" /></td>
-            <td th:if="${#fields.hasErrors('unit')}" th:errors="*{unit}">Unit Error</td>
-        </tr>
-        <tr>
-            <td>PIC:</td>
-            <td><input type="text" th:field="*{pic}" /></td>
-            <td th:if="${#fields.hasErrors('pic')}" th:errors="*{pic}">PIC Error</td>
-        </tr>
-        <tr>
-            <td>Audit Issue:</td>
-            <td><input type="text" th:field="*{auditIssue}" /></td>
-            <td th:if="${#fields.hasErrors('auditIssue')}" th:errors="*{auditIssue}">Audit Issue Error</td>
-        </tr>
-        <tr>
-            <td>Audit Issue Description:</td>
-            <td><input type="text" th:field="*{auditIssueDescription}" /></td>
-            <td th:if="${#fields.hasErrors('auditIssueDescription')}" th:errors="*{auditIssueDescription}">Audit Issue Description Error</td>
-        </tr>
-        <tr>
-            <td>Action Plan:</td>
-            <td><input type="text" th:field="*{actionPlan}" /></td>
-            <td th:if="${#fields.hasErrors('actionPlan')}" th:errors="*{actionPlan}">Action Plan Error</td>
-        </tr>
-        <tr>
-            <td>Risk Level:</td>
-            <td>
-                <select th:field="*{riskLevel}">
-                    <option th:value="LOW">LOW</option>
-                    <option th:value="MEDIUM">MEDIUM</option>
-                    <option th:value="HIGH">HIGH</option>
-                </select>
-            </td>
-            <td th:if="${#fields.hasErrors('riskLevel')}" th:errors="*{riskLevel}">Risk Level Error</td>
-        </tr>
-        <tr>
-            <td>Outstanding Action Plan:</td>
-            <td><input type="text" th:field="*{outstandingActionPlan}" /></td>
-            <td th:if="${#fields.hasErrors('outstandingActionPlan')}" th:errors="*{outstandingActionPlan}">Outstanding Action Error</td>
-        </tr>
-        <tr>
-            <td>Initial Due Date:</td>
-            <td><input type="text" th:field="*{initialDueDate}" /></td>
-            <td th:if="${#fields.hasErrors('initialDueDate')}" th:errors="*{initialDueDate}">Initial Due Date Error</td>
-        </tr>
-        <tr>
-            <td>Reschedule I:</td>
-            <td><input type="text" th:field="*{firstRescheduled}" /></td>
-            <td th:if="${#fields.hasErrors('firstRescheduled')}" th:errors="*{firstRescheduled}">Reschedule I Error</td>
-        </tr>
-        <tr>
-            <td>Reschedule II:</td>
-            <td><input type="text" th:field="*{secondRescheduled}" /></td>
-            <td th:if="${#fields.hasErrors('secondRescheduled')}" th:errors="*{secondRescheduled}">Reschedule II Error</td>
-        </tr>
-        <tr>
-            <td>Status: </td>
-            <td>
-                <select th:field="*{status}">
-                    <option th:value="NEW">NEW</option>
-                    <option th:value="ON_PROGRESS">ON PROGRESS</option>
-                    <option th:value="DONE">DONE</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td><button type="submit">Submit</button></td>
-        </tr>
-    </table>
+
+    <label for="auditYear">Tahun Audit</label>
+    <input type="text" th:value="${#dates.year(#dates.createNow())}" th:name="auditYear" id="auditYear" />
+
+    <label for="auditor">Auditor</label>
+    <input type="text" th:field="*{auditor}" id="auditor"/>
+
+    <label for="domain">Domain</label>
+    <input type="text" th:field="*{domain}" id="domain"/>
+
+    <label for="unit">Domain</label>
+    <input type="text" th:field="*{unit}" id="unit" />
+
+    <label for="pic">PIC</label>
+    <input type="text" th:field="*{pic}" id="pic"/>
+
+    <label for="auditIssue">Audit Issue</label>
+    <input type="text" th:field="*{auditIssue}" id="auditIssue" />
+
+    <label for="auditIssueDescription">Audit Issue Description</label>
+    <input type="text" th:field="*{auditIssueDescription}" id="auditIssueDescription" />
+
+    <label for="actionPlan">Action Plan</label>
+    <input type="text" th:field="*{actionPlan}" id="actionPlan" />
+
+    <label for="riskLevel">Risk Level</label>
+    <select th:field="*{riskLevel}" id="riskLevel">
+        <option th:value="LOW">LOW</option>
+        <option th:value="MEDIUM">MEDIUM</option>
+        <option th:value="HIGH">HIGH</option>
+    </select>
+
+    <label for="outstandingActionPlan">Outstanding Action Plan</label>
+    <input type="text" th:field="*{outstandingActionPlan}" id="outstandingActionPlan"  />
+
+    <label for="initialDueDate">Initial Due Date</label>
+    <input type="date" th:field="*{initialDueDate}" id="initialDueDate" />
+
+    <label for="firstRescheduled">Reschedule I </label>
+    <input type="date" th:field="*{firstRescheduled}" id="firstRescheduled" />
+
+    <label for="secondRescheduled">Reschedule II </label>
+    <input type="date" th:field="*{secondRescheduled}" id="secondRescheduled" />
+
+    <label for="status">Status </label>
+    <select th:field="*{status}" id="status">
+        <option th:value="NEW">NEW</option>
+        <option th:value="ON_PROGRESS">ON PROGRESS</option>
+        <option th:value="DONE">DONE</option>
+    </select>
+
+    <input type="submit" value="Submit"/>
+
 </form>
 </body>
 </html>
