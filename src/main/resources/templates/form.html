@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Form Data Audit</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<form action="#" th:action="@{/audits/form}" th:object="${audit}" method="post">
+    <table border="0">
+        <tr>
+            <td>Tahun Audit:</td>
+            <td><input type="text" th:field="*{auditYear}" /></td>
+            <td th:if="${#fields.hasErrors('auditYear')}" th:errors="*{auditYear}">Tahun Audit Error</td>
+        </tr>
+        <tr>
+            <td>Auditor:</td>
+            <td><input type="text" th:field="*{auditor}" /></td>
+            <td th:if="${#fields.hasErrors('auditor')}" th:errors="*{auditor}">Auditor Error</td>
+        </tr>
+        <tr>
+            <td>Domain:</td>
+            <td><input type="text" th:field="*{domain}" /></td>
+            <td th:if="${#fields.hasErrors('domain')}" th:errors="*{domain}">Domain Error</td>
+        </tr>
+        <tr>
+            <td>Unit:</td>
+            <td><input type="text" th:field="*{unit}" /></td>
+            <td th:if="${#fields.hasErrors('unit')}" th:errors="*{unit}">Unit Error</td>
+        </tr>
+        <tr>
+            <td>PIC:</td>
+            <td><input type="text" th:field="*{pic}" /></td>
+            <td th:if="${#fields.hasErrors('pic')}" th:errors="*{pic}">PIC Error</td>
+        </tr>
+        <tr>
+            <td>Audit Issue:</td>
+            <td><input type="text" th:field="*{auditIssue}" /></td>
+            <td th:if="${#fields.hasErrors('auditIssue')}" th:errors="*{auditIssue}">Audit Issue Error</td>
+        </tr>
+        <tr>
+            <td>Audit Issue Description:</td>
+            <td><input type="text" th:field="*{auditIssueDescription}" /></td>
+            <td th:if="${#fields.hasErrors('auditIssueDescription')}" th:errors="*{auditIssueDescription}">Audit Issue Description Error</td>
+        </tr>
+        <tr>
+            <td>Action Plan:</td>
+            <td><input type="text" th:field="*{actionPlan}" /></td>
+            <td th:if="${#fields.hasErrors('actionPlan')}" th:errors="*{actionPlan}">Action Plan Error</td>
+        </tr>
+        <tr>
+            <td>Risk Level:</td>
+            <td><input type="text" th:field="*{riskLevel}" /></td>
+            <td th:if="${#fields.hasErrors('riskLevel')}" th:errors="*{riskLevel}">Risk Level Error</td>
+        </tr>
+        <tr>
+            <td>Outstanding Action Plan:</td>
+            <td><input type="text" th:field="*{outstandingActionPlan}" /></td>
+            <td th:if="${#fields.hasErrors('outstandingActionPlan')}" th:errors="*{outstandingActionPlan}">Outstanding Action Error</td>
+        </tr>
+        <tr>
+            <td>Initial Due Date:</td>
+            <td><input type="text" th:field="*{initialDueDate}" /></td>
+            <td th:if="${#fields.hasErrors('initialDueDate')}" th:errors="*{initialDueDate}">Initial Due Date Error</td>
+        </tr>
+        <tr>
+            <td>Reschedule I:</td>
+            <td><input type="text" th:field="*{firstRescheduled}" /></td>
+            <td th:if="${#fields.hasErrors('firstRescheduled')}" th:errors="*{firstRescheduled}">Reschedule I Error</td>
+        </tr>
+        <tr>
+            <td>Reschedule II:</td>
+            <td><input type="text" th:field="*{secondRescheduled}" /></td>
+            <td th:if="${#fields.hasErrors('secondRescheduled')}" th:errors="*{secondRescheduled}">Reschedule II Error</td>
+        </tr>
+        <tr>
+            <td><button type="submit">Submit</button></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

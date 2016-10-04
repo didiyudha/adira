@@ -1,6 +1,6 @@
 package com.adira.entity;
 
-import com.adira.enumeration.LevelResiko;
+import com.adira.enumeration.RiskLevel;
 import com.adira.enumeration.Status;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -11,16 +11,15 @@ import java.util.Date;
  * Created by didi-realtime on 27/09/16.
  */
 @Entity
-@Table(name = "entities")
+@Table(name = "audits")
 public class Audit {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "tahun_audit")
-    private Date tahunAudit;
+    @Column(name = "audit_year")
+    private int auditYear;
 
     @Column(name = "auditor")
     private String auditor;
@@ -34,18 +33,18 @@ public class Audit {
     @Column(name = "pic")
     private String pic;
 
-    @Column(name = "isu_audit")
-    private String isuAudit;
+    @Column(name = "audit_issue")
+    private String auditIssue;
 
-    @Column(name = "deskripsi_isu_audit")
-    private String deskripsiIsuAudit;
+    @Column(name = "audit_issue_description")
+    private String auditIssueDescription;
 
     @Column(name = "action_plan")
     private String actionPlan;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "level_resion", columnDefinition = "varchar(10) default 'LOW'")
-    private LevelResiko levelResiko;
+    @Column(name = "risk_level", columnDefinition = "varchar(10) default 'LOW'")
+    private RiskLevel riskLevel;
 
     @Column(name = "outstanding_action_plan")
     private String outstandingActionPlan;
@@ -58,27 +57,37 @@ public class Audit {
     @Column(name = "status")
     private Status status;
 
+    @Temporal(TemporalType.DATE)
+    @Column(name = "first_rescheduled")
+    private Date firstRescheduled;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "second_rescheduled")
+    private Date secondRescheduled;
+
     @Column(name = "deleted", nullable = false)
     private boolean deleted = false;
 
     public Audit() {
     }
 
-    public Audit(Date tahunAudit, String auditor, String domain, String unit, String pic, String isuAudit,
-                 String deskripsiIsuAudit, String actionPlan, LevelResiko levelResiko, String outstandingActionPlan,
-                 Date initialDueDate, Status status) {
-        this.tahunAudit = tahunAudit;
+    public Audit(int auditYear, String auditor, String domain, String unit, String pic, String auditIssue,
+                 String auditIssueDescription, String actionPlan, RiskLevel riskLevel, String outstandingActionPlan,
+                 Date initialDueDate, Status status, boolean deleted) {
+
+        this.auditYear = auditYear;
         this.auditor = auditor;
         this.domain = domain;
         this.unit = unit;
         this.pic = pic;
-        this.isuAudit = isuAudit;
-        this.deskripsiIsuAudit = deskripsiIsuAudit;
+        this.auditIssue = auditIssue;
+        this.auditIssueDescription = auditIssueDescription;
         this.actionPlan = actionPlan;
-        this.levelResiko = levelResiko;
+        this.riskLevel = riskLevel;
         this.outstandingActionPlan = outstandingActionPlan;
         this.initialDueDate = initialDueDate;
         this.status = status;
+        this.deleted = deleted;
     }
 
     public String getId() {
@@ -89,12 +98,12 @@ public class Audit {
         this.id = id;
     }
 
-    public Date getTahunAudit() {
-        return tahunAudit;
+    public int getAuditYear() {
+        return auditYear;
     }
 
-    public void setTahunAudit(Date tahunAudit) {
-        this.tahunAudit = tahunAudit;
+    public void setAuditYear(int auditYear) {
+        this.auditYear = auditYear;
     }
 
     public String getAuditor() {
@@ -129,20 +138,20 @@ public class Audit {
         this.pic = pic;
     }
 
-    public String getIsuAudit() {
-        return isuAudit;
+    public String getAuditIssue() {
+        return auditIssue;
     }
 
-    public void setIsuAudit(String isuAudit) {
-        this.isuAudit = isuAudit;
+    public void setAuditIssue(String auditIssue) {
+        this.auditIssue = auditIssue;
     }
 
-    public String getDeskripsiIsuAudit() {
-        return deskripsiIsuAudit;
+    public String getAuditIssueDescription() {
+        return auditIssueDescription;
     }
 
-    public void setDeskripsiIsuAudit(String deskripsiIsuAudit) {
-        this.deskripsiIsuAudit = deskripsiIsuAudit;
+    public void setAuditIssueDescription(String auditIssueDescription) {
+        this.auditIssueDescription = auditIssueDescription;
     }
 
     public String getActionPlan() {
@@ -153,12 +162,12 @@ public class Audit {
         this.actionPlan = actionPlan;
     }
 
-    public LevelResiko getLevelResiko() {
-        return levelResiko;
+    public RiskLevel getRiskLevel() {
+        return riskLevel;
     }
 
-    public void setLevelResiko(LevelResiko levelResiko) {
-        this.levelResiko = levelResiko;
+    public void setRiskLevel(RiskLevel riskLevel) {
+        this.riskLevel = riskLevel;
     }
 
     public String getOutstandingActionPlan() {
@@ -183,6 +192,22 @@ public class Audit {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Date getFirstRescheduled() {
+        return firstRescheduled;
+    }
+
+    public void setFirstRescheduled(Date firstRescheduled) {
+        this.firstRescheduled = firstRescheduled;
+    }
+
+    public Date getSecondRescheduled() {
+        return secondRescheduled;
+    }
+
+    public void setSecondRescheduled(Date secondRescheduled) {
+        this.secondRescheduled = secondRescheduled;
     }
 
     public boolean isDeleted() {

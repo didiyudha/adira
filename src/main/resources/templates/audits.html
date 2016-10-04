@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <title>Audit</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <table border="1" width="90%">
+            <tr>
+                <th>Tahun Audit</th>
+                <th>Auditor</th>
+                <th>Domain</th>
+                <th>Unit</th>
+                <th>PIC</th>
+                <th>Isu Audit</th>
+                <th>Deskripsi Isu Audit</th>
+                <th>Action Plan</th>
+                <th>Level Resiko</th>
+                <th>Outstanding Action Plan</th>
+                <th>Initial Due Date</th>
+                <th>Reschedule I</th>
+                <th>Reschedule II</th>
+                <th>Status</th>
+            </tr>
+            <tr th:each="audit : ${audits}">
+                <td th:text="${audit.auditYear}">tahun audit</td>
+                <td th:text="${audit.auditor}">auditor</td>
+                <td th:text="${audit.domain}">domain</td>
+                <td th:text="${audit.unit}">unit</td>
+                <td th:text="${audit.pic}">pic</td>
+                <td th:text="${audit.auditIssue}">audit issue</td>
+                <td th:text="${audit.auditIssueDescription}">Audit Issue Description</td>
+                <td th:text="${audit.actionPlan}">actionPlan</td>
+                <td th:text="${audit.riskLevel}">riskLevel</td>
+                <td th:text="${audit.outstandingActionPlan}">outstandingActionPlan</td>
+                <td th:text="${audit.initialDueDate}">initialDueDate</td>
+                <td th:text="${audit.firstRescheduled}">firstRescheduled</td>
+                <td th:text="${audit.secondRescheduled}">secondRescheduled</td>
+                <td th:text="${audit.status}">status</td>
+            </tr>
+        </table>
+    </body>
+</html>
