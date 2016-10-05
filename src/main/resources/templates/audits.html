@@ -5,9 +5,15 @@
         <link rel="stylesheet" th:href="@{/css/style.css}" href="../../css/style.css" />
     </head>
     <body>
+
+        <form action="#" th:action="@{/logout}" method="POST">
+            <input type="submit" value="Logout" align="center"/>
+        </form>
+
         <form action="#" th:action="@{/audits/form}" method="GET">
             <input type="submit" value="Tambah Data" align="center"/>
         </form>
+
         <table>
             <tr>
                 <th>Tahun Audit</th>
