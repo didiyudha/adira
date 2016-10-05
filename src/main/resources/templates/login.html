@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Form Data Audit</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/login.css}" href="../../css/login.css" />
+</head>
+<body>
+<form name="f" th:action="@{/login}" method="post">
+    <div class="imgcontainer">
+        <img th:src="@{/images/img_avatar2.png}"
+             src="../images/img_avatar2.png" class="img-responsive" alt="Responsive image" th:height="400" th:width="400"/>
+    </div>
+    <div th:if="${param.error}" class="alert alert-error">
+        Invalid username and password.
+    </div>
+
+    <div class="container">
+        <label><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="username" th:required="required" />
+
+        <label><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" th:required="required" />
+
+        <button type="submit">Login</button>
+    </div>
+</form>
+</body>
+</html>
