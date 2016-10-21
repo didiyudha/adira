@@ -2,7 +2,7 @@ package com.adira.factory;
 
 import com.adira.dao.AuditDao;
 import com.adira.job.AuditJob;
-import com.adira.service.AuditService;
+import com.adira.service.audit.AuditService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;

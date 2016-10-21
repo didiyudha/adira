@@ -7,29 +7,28 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import java.util.Properties;
+
 /**
  * Created by didiyudha on 21/10/16.
  */
 @Configuration
 public class MailConfiguration {
-    @Value("${mail.host}")
-    private String host;
-    @Value("${mail.from}")
-    private String from;
 
     @Bean
     public JavaMailSender javaMailService() {
-        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
-        /*Properties props = new Properties();
-        props.put("mail.default-encoding","UTF-8");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-        props.put("mail.username", "didiyudha@gmail.com");
-        props.put("mail.password", "lovemother");
-        javaMailSender.setJavaMailProperties(props);*/
-        return javaMailSender;
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
+        mailSender.setUsername("didiyudha@gmail.com");
+        mailSender.setPassword("lovemother");
+
+        Properties properties = mailSender.getJavaMailProperties();
+        properties.put("mail.transport.protocol", "smtp");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.debug", "true");
+        return mailSender;
     }
 
     @Bean

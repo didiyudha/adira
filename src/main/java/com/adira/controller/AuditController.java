@@ -2,7 +2,7 @@ package com.adira.controller;
 
 import com.adira.dao.AuditDao;
 import com.adira.entity.Audit;
-import com.adira.service.AuditService;
+import com.adira.service.audit.AuditService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;

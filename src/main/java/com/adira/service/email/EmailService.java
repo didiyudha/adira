@@ -1,4 +1,4 @@
-package com.adira.service;
+package com.adira.service.email;
 
 import javax.mail.MessagingException;
 

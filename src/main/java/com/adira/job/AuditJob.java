@@ -1,7 +1,7 @@
 package com.adira.job;
 
 import com.adira.dao.AuditDao;
-import com.adira.service.AuditService;
+import com.adira.service.audit.AuditService;
 
 /**
  * Created by didiyudha on 21/10/16.

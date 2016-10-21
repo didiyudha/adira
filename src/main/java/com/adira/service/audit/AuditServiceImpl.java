@@ -1,4 +1,4 @@
-package com.adira.service;
+package com.adira.service.audit;
 
 import com.adira.dao.AuditDao;
 import com.adira.entity.Audit;

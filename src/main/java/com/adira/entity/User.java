@@ -1,17 +1,12 @@
 package com.adira.entity;
-
-<<<<<<< HEAD
-/**
- * Created by didi-realtime on 05/10/16.
- */
-public class User {
-=======
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
+
+
 
 /**
  * Created by didiyudha on 05/10/16.
@@ -93,5 +88,4 @@ public class User {
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
->>>>>>> e0b9a94ee3913c7aa44df295e29a0ce2f5b86a05
 }
