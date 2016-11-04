@@ -3,6 +3,7 @@ package com.adira.entity;
 import com.adira.enumeration.RiskLevel;
 import com.adira.enumeration.Status;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -38,9 +39,11 @@ public class Audit {
     private String auditIssue;
 
     @Column(name = "audit_issue_description")
+    @Type(type = "text")
     private String auditIssueDescription;
 
     @Column(name = "action_plan")
+    @Type(type = "text")
     private String actionPlan;
 
     @Enumerated(EnumType.STRING)
@@ -48,6 +51,7 @@ public class Audit {
     private RiskLevel riskLevel;
 
     @Column(name = "outstanding_action_plan")
+    @Type(type = "text")
     private String outstandingActionPlan;
 
     @Temporal(TemporalType.DATE)

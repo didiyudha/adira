@@ -34,4 +34,8 @@ public class EmailServiceImpl implements EmailService {
         System.out.println("Email has been sent");
     }
 
+    @Override
+    public void sendEmailWithAttachment(String from, String to, String filePath) {
+
+    }
 }

@@ -1,26 +1,30 @@
 package com.adira;
 
-import com.adira.service.email.EmailService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.adira.service.storage.StorageProperties;
+import com.adira.service.storage.StorageService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableAutoConfiguration
 @ComponentScan
-public class AdiraApplication implements CommandLineRunner {
+@EnableConfigurationProperties(StorageProperties.class)
+public class AdiraApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AdiraApplication.class, args);
 	}
-	@Autowired
-	EmailService emailService;
 
-	@Override
-	public void run(String... strings) throws Exception {
-		emailService.sendEmail("didiyudha@gmail.com", "kioson.xero.integration@gmail.com");
+	@Bean
+	CommandLineRunner init(StorageService storageService) {
+		return (args) -> {
+			storageService.deleteAll();
+			storageService.init();
+		};
 	}
 }
