@@ -1,5 +1,6 @@
 package com.adira.service;
 
+import com.adira.service.email.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -63,6 +64,11 @@ public class EmailServiceImpl implements EmailService {
         }catch (MessagingException e){
             System.out.println(e.getMessage());
         }
+    }
+
+    @Override
+    public void sendEmailWithAttachment(String from, String to, String filePath) {
+
     }
 
 }

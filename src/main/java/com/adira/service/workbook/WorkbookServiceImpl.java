@@ -3,20 +3,17 @@ package com.adira.service.workbook;
 import com.adira.dao.AuditDao;
 import com.adira.entity.Audit;
 import com.adira.service.audit.AuditService;
+import com.adira.service.storage.StorageService;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.io.*;
+import java.util.*;
 
 /**
  * Created by didi-realtime on 22/10/16.
@@ -32,6 +29,8 @@ public class WorkbookServiceImpl implements WorkbookService {
     private AuditDao auditDao;
     @Autowired
     private AuditService auditService;
+    @Autowired
+    private StorageService storageService;
 
     @Override
     public void createWorkbook() throws IOException {
@@ -64,5 +63,48 @@ public class WorkbookServiceImpl implements WorkbookService {
         FileOutputStream fileOutputStream = new FileOutputStream(new File("Employee_Info.xlsx"));
         workbook.write(fileOutputStream);
         fileOutputStream.close();
+    }
+
+    @Override
+    public void readData(String fileName) throws IOException {
+        FileInputStream file = new FileInputStream(storageService.load(fileName).toFile());
+        XSSFWorkbook workbook = new XSSFWorkbook(file);
+        XSSFSheet sheet = workbook.getSheetAt(0);
+
+        Iterator<Row> rowIterator = sheet.iterator();
+
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+            Iterator<Cell> cellIterator = row.cellIterator();
+
+            while (cellIterator.hasNext()) {
+                Cell cell = cellIterator.next();
+
+                switch (cell.getCellType()) {
+                    case Cell.CELL_TYPE_NUMERIC:
+                        System.out.println(cell.getNumericCellValue()+"\t");
+                        break;
+                    case Cell.CELL_TYPE_STRING:
+                        System.out.println(cell.getStringCellValue()+"\t");
+                        break;
+                }
+            }
+        }
+
+    }
+
+    private String[] getListOfHeader() {
+
+        String[] headers = {
+                "Tahun Audit",
+                "Auditor",
+                "Domain",
+                "Unit",
+                "PIC",
+                "Isu Audit",
+
+        };
+
+        return headers;
     }
 }

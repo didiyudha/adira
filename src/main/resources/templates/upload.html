@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http:thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <title>Upload Data Audit</title>
 </head>
 <body>
@@ -10,15 +10,15 @@
     </div>
 
     <div>
-        <form method="post" enctype="multipart/form-data", action="/upload">
+        <form method="post" enctype="multipart/form-data" th:action="@{/upload}">
             <table>
                 <tr>
                     <td>File Upload: </td>
-                    <td><input type="file", name="file"></td>
+                    <td><input type="file" name="file" /></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><input type="submit", value="Upload"></td>
+                    <td><input type="submit" value="Upload" /></td>
                 </tr>
             </table>
         </form>

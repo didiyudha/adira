@@ -1,5 +1,6 @@
 package com.adira.service.workbook;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -7,4 +8,6 @@ import java.io.IOException;
  */
 public interface WorkbookService {
     void createWorkbook() throws IOException;
+
+    void readData(String fileName) throws IOException;
 }
