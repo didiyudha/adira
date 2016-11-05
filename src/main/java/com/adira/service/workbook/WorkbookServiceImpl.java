@@ -76,35 +76,73 @@ public class WorkbookServiceImpl implements WorkbookService {
         while (rowIterator.hasNext()) {
             Row row = rowIterator.next();
             Iterator<Cell> cellIterator = row.cellIterator();
+            List<String> columnValues = new ArrayList<>();
 
             while (cellIterator.hasNext()) {
+
                 Cell cell = cellIterator.next();
 
                 switch (cell.getCellType()) {
                     case Cell.CELL_TYPE_NUMERIC:
                         System.out.println(cell.getNumericCellValue()+"\t");
+                        columnValues.add(String.valueOf(cell.getNumericCellValue()));
                         break;
                     case Cell.CELL_TYPE_STRING:
                         System.out.println(cell.getStringCellValue()+"\t");
+                        columnValues.add(String.valueOf(cell.getStringCellValue()));
                         break;
                 }
+            }
+
+            if (columnValues.size() > 0) {
+
             }
         }
 
     }
 
     private String[] getListOfHeader() {
+        return fileColumn;
+    }
 
-        String[] headers = {
-                "Tahun Audit",
-                "Auditor",
-                "Domain",
-                "Unit",
-                "PIC",
-                "Isu Audit",
+    private void setAuditProperty(List<String> colVal, Audit audit) {
 
-        };
+        int i = 0;
+        
+        for (String val : colVal) {
+            switch (i) {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    break;
+                case 9:
+                    break;
+                case 10:
+                    break;
+                case 11:
+                    break;
+                case 12:
+                    break;
+                case 13:
+                    break;
+            }
 
-        return headers;
+            i++;
+        }
+
     }
 }
