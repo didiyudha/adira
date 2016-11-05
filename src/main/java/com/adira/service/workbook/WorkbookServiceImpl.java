@@ -2,6 +2,9 @@ package com.adira.service.workbook;
 
 import com.adira.dao.AuditDao;
 import com.adira.entity.Audit;
+import com.adira.enumeration.RiskLevel;
+import com.adira.enumeration.Status;
+import com.adira.function.FunctionDate;
 import com.adira.service.audit.AuditService;
 import com.adira.service.storage.StorageService;
 import org.apache.poi.ss.usermodel.Cell;
@@ -13,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -66,7 +70,7 @@ public class WorkbookServiceImpl implements WorkbookService {
     }
 
     @Override
-    public void readData(String fileName) throws IOException {
+    public void readData(String fileName) throws IOException, ParseException {
         FileInputStream file = new FileInputStream(storageService.load(fileName).toFile());
         XSSFWorkbook workbook = new XSSFWorkbook(file);
         XSSFSheet sheet = workbook.getSheetAt(0);
@@ -95,6 +99,9 @@ public class WorkbookServiceImpl implements WorkbookService {
             }
 
             if (columnValues.size() > 0) {
+                Audit audit = new Audit();
+                setAuditProperty(columnValues, audit);
+                auditDao.save(audit);
 
             }
         }
@@ -105,39 +112,67 @@ public class WorkbookServiceImpl implements WorkbookService {
         return fileColumn;
     }
 
-    private void setAuditProperty(List<String> colVal, Audit audit) {
+    private void setAuditProperty(List<String> colVal, Audit audit) throws ParseException {
 
         int i = 0;
 
         for (String val : colVal) {
+
             switch (i) {
                 case 0:
+                    audit.setAuditYear(Integer.valueOf(val));
                     break;
                 case 1:
+                    audit.setAuditor(val);
                     break;
                 case 2:
+                    audit.setDomain(val);
                     break;
                 case 3:
+                    audit.setUnit(val);
                     break;
                 case 4:
+                    audit.setPic(val);
                     break;
                 case 5:
+                    audit.setAuditIssue(val);
                     break;
                 case 6:
+                    audit.setAuditIssueDescription(val);
                     break;
                 case 7:
+                    audit.setActionPlan(val);
                     break;
                 case 8:
+                    if (val != null && val.toUpperCase().equals("High".toUpperCase()))
+                        audit.setRiskLevel(RiskLevel.HIGH);
+                    if (val != null && val.toUpperCase().equals("Low".toUpperCase()))
+                        audit.setRiskLevel(RiskLevel.LOW);
+                    if (val != null && val.toUpperCase().equals("Medium".toUpperCase()))
+                        audit.setRiskLevel(RiskLevel.MEDIUM);
                     break;
                 case 9:
+                    audit.setOutstandingActionPlan(val);
                     break;
                 case 10:
+                    if (val != null && !val.equals(""))
+                        audit.setInitialDueDate(FunctionDate.stringToDate(val));
                     break;
                 case 11:
+                    if (val != null || !val.equals(""))
+                        audit.setFirstRescheduled(FunctionDate.stringToDate(val));
                     break;
                 case 12:
+                    if (val != null || !val.equals(""))
+                        audit.setSecondRescheduled(FunctionDate.stringToDate(val));
                     break;
                 case 13:
+                    if (val != null && val.toUpperCase().equals("In Progress".toUpperCase()))
+                        audit.setStatus(Status.ON_PROGRESS);
+                    if (val != null && val.toUpperCase().equals("New".toUpperCase()))
+                        audit.setStatus(Status.NEW);
+                    if (val != null && val.toUpperCase().equals("Done".toUpperCase()))
+                        audit.setStatus(Status.DONE);
                     break;
             }
 
