@@ -16,7 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableAutoConfiguration
 @ComponentScan
 @EnableConfigurationProperties(StorageProperties.class)
-public class AdiraApplication implements CommandLineRunner {
+public class AdiraApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AdiraApplication.class, args);
@@ -30,11 +30,4 @@ public class AdiraApplication implements CommandLineRunner {
 		};
 	}
 
-	@Autowired
-	WorkbookService workbookService;
-
-	@Override
-	public void run(String... strings) throws Exception {
-		workbookService.readData("template.xlsx");
-	}
 }

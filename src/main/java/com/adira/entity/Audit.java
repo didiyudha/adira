@@ -8,6 +8,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by didi-realtime on 27/09/16.
@@ -74,6 +76,14 @@ public class Audit {
     @Column(name = "deleted", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private boolean deleted = false;
+
+    @OneToMany
+    @JoinTable(
+            name = "audit_comments",
+            joinColumns = @JoinColumn(name = "audit_id"),
+            inverseJoinColumns = @JoinColumn(name = "comment_id")
+    )
+    private Set<Comment> comments = new HashSet<>();
 
     public Audit() {
     }
@@ -223,5 +233,13 @@ public class Audit {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.UUID;
 
 /**
@@ -38,7 +39,7 @@ public class FileUploadController {
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public String uploadFile(@RequestParam("file") MultipartFile file,
-                             RedirectAttributes redirectAttributes) {
+                             RedirectAttributes redirectAttributes) throws ParseException {
         String originalFileName = file.getOriginalFilename();
         storageService.deleteAll();
         storageService.store(file);
