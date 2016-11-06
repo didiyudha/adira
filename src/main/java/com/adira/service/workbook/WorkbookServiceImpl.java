@@ -79,23 +79,29 @@ public class WorkbookServiceImpl implements WorkbookService {
 
         while (rowIterator.hasNext()) {
             Row row = rowIterator.next();
+            int numerOfCells = row.getPhysicalNumberOfCells();
             Iterator<Cell> cellIterator = row.cellIterator();
             List<String> columnValues = new ArrayList<>();
 
-            while (cellIterator.hasNext()) {
-
-                Cell cell = cellIterator.next();
-
-                switch (cell.getCellType()) {
-                    case Cell.CELL_TYPE_NUMERIC:
-                        System.out.println(cell.getNumericCellValue()+"\t");
-                        columnValues.add(String.valueOf(cell.getNumericCellValue()));
-                        break;
-                    case Cell.CELL_TYPE_STRING:
-                        System.out.println(cell.getStringCellValue()+"\t");
-                        columnValues.add(String.valueOf(cell.getStringCellValue()));
-                        break;
+            for (int i = 0; i <= numerOfCells-1; i++) {
+                Cell cell = row.getCell(i);
+                if (cell == null) {
+                    columnValues.add("");
+                } else {
+                    switch (cell.getCellType()) {
+                        case Cell.CELL_TYPE_NUMERIC:
+                            System.out.println(cell.getNumericCellValue()+"\t");
+                            columnValues.add(String.valueOf(cell.getNumericCellValue()));
+                            break;
+                        case Cell.CELL_TYPE_STRING:
+                            if (!Arrays.asList(getListOfHeader()).contains(cell.getStringCellValue())) {
+                                System.out.println(cell.getStringCellValue()+"\t");
+                                columnValues.add(String.valueOf(cell.getStringCellValue()));
+                            }
+                            break;
+                    }
                 }
+
             }
 
             if (columnValues.size() > 0) {
@@ -120,7 +126,9 @@ public class WorkbookServiceImpl implements WorkbookService {
 
             switch (i) {
                 case 0:
-                    audit.setAuditYear(Integer.valueOf(val));
+                    Float yearFloat = Float.valueOf(val);
+
+                    audit.setAuditYear(Math.round(yearFloat));
                     break;
                 case 1:
                     audit.setAuditor(val);
@@ -159,20 +167,30 @@ public class WorkbookServiceImpl implements WorkbookService {
                         audit.setInitialDueDate(FunctionDate.stringToDate(val));
                     break;
                 case 11:
-                    if (val != null || !val.equals(""))
-                        audit.setFirstRescheduled(FunctionDate.stringToDate(val));
+                    switch (val.toUpperCase()) {
+                        case "IN PROGRESS":
+                            audit.setStatus(Status.ON_PROGRESS);
+                            break;
+                        case "NEW":
+                            audit.setStatus(Status.NEW);
+                            break;
+                        case "DONE":
+                            audit.setStatus(Status.DONE);
+                            break;
+                        default:
+                            audit.setStatus(Status.NEW);
+                            break;
+                    }
+
                     break;
                 case 12:
-                    if (val != null || !val.equals(""))
-                        audit.setSecondRescheduled(FunctionDate.stringToDate(val));
+                    if (!val.equals(""))
+                        audit.setFirstRescheduled(FunctionDate.stringToDate(val));
+
                     break;
                 case 13:
-                    if (val != null && val.toUpperCase().equals("In Progress".toUpperCase()))
-                        audit.setStatus(Status.ON_PROGRESS);
-                    if (val != null && val.toUpperCase().equals("New".toUpperCase()))
-                        audit.setStatus(Status.NEW);
-                    if (val != null && val.toUpperCase().equals("Done".toUpperCase()))
-                        audit.setStatus(Status.DONE);
+                    if (!val.equals(""))
+                        audit.setSecondRescheduled(FunctionDate.stringToDate(val));
                     break;
             }
 

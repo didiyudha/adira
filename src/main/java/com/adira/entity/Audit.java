@@ -23,7 +23,7 @@ public class Audit {
     private String id;
 
     @Column(name = "audit_year")
-    private int auditYear;
+    private Integer auditYear;
 
     @Column(name = "auditor")
     private String auditor;
@@ -115,11 +115,11 @@ public class Audit {
         this.id = id;
     }
 
-    public int getAuditYear() {
+    public Integer getAuditYear() {
         return auditYear;
     }
 
-    public void setAuditYear(int auditYear) {
+    public void setAuditYear(Integer auditYear) {
         this.auditYear = auditYear;
     }
 

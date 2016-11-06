@@ -22,6 +22,7 @@ import java.util.UUID;
  */
 @Controller
 public class FileUploadController {
+
     @Autowired
     private WorkbookService workbookService;
 
@@ -41,13 +42,13 @@ public class FileUploadController {
     public String uploadFile(@RequestParam("file") MultipartFile file,
                              RedirectAttributes redirectAttributes) throws ParseException {
         String originalFileName = file.getOriginalFilename();
-        storageService.deleteAll();
+
         storageService.store(file);
 
         try {
             workbookService.readData(originalFileName);
         } catch (IOException e) {
-            throw new StorageFileNotFoundException("File not foud "+originalFileName, e);
+            throw new StorageFileNotFoundException("File not found "+originalFileName, e);
         }
 
         return "redirect:/audits";
