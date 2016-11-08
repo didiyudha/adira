@@ -6,6 +6,7 @@ import com.adira.enumeration.RiskLevel;
 import com.adira.enumeration.Status;
 import com.adira.function.FunctionDate;
 import com.adira.service.audit.AuditService;
+import com.adira.service.storage.StorageProperties;
 import com.adira.service.storage.StorageService;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.*;
 
@@ -35,6 +37,8 @@ public class WorkbookServiceImpl implements WorkbookService {
     private AuditService auditService;
     @Autowired
     private StorageService storageService;
+    @Autowired
+    private StorageProperties properties;
 
     @Override
     public void createWorkbook() throws IOException {
@@ -67,6 +71,32 @@ public class WorkbookServiceImpl implements WorkbookService {
         FileOutputStream fileOutputStream = new FileOutputStream(new File("Employee_Info.xlsx"));
         workbook.write(fileOutputStream);
         fileOutputStream.close();
+    }
+
+    @Override
+    public void createWorkBook(List<String> contens) {
+        String[] headers = getListOfHeader();
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet spreadSheet = workbook.createSheet("Data Audit");
+        XSSFRow row = spreadSheet.createRow(1);
+        int cellId = 0;
+
+        for (int i = 0; i <= headers.length - 1; i++) {
+            Cell cell = row.createCell(i);
+            cell.setCellValue(headers[i]);
+        }
+
+        try {
+            String rootLocation = properties.getPathLocation();
+            FileOutputStream fileOutputStream = new FileOutputStream(new File(rootLocation+File.separator+"test-headers.xlsx"));
+            workbook.write(fileOutputStream);
+            fileOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
