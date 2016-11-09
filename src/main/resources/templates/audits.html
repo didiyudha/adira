@@ -13,25 +13,31 @@
         <form action="#" th:action="@{/audits/form}" method="GET">
             <input type="submit" value="Tambah Data" align="center"/>
         </form>
-
+        <form action="#" th:action="@{/audits}" method="GET">
+            <input type="date" align="center" name="date"/>
+            <input type="submit" value="Cari" align="center"/>
+        </form>
         <table>
+            <thead>
             <tr>
-                <th>Tahun Audit</th>
-                <th>Auditor</th>
-                <th>Domain</th>
-                <th>Unit</th>
-                <th>PIC</th>
-                <th>Isu Audit</th>
-                <th>Deskripsi Isu Audit</th>
-                <th>Action Plan</th>
-                <th>Level Resiko</th>
-                <th>Outstanding Action Plan</th>
-                <th>Initial Due Date</th>
-                <th>Reschedule I</th>
-                <th>Reschedule II</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th scope="col">Tahun Audit</th>
+                <th scope="col">Auditor</th>
+                <th scope="col">Domain</th>
+                <th scope="col">Unit</th>
+                <th scope="col">PIC</th>
+                <th scope="col">Isu Audit</th>
+                <th scope="col">Deskripsi Isu Audit</th>
+                <th scope="col">Action Plan</th>
+                <th scope="col">Level Resiko</th>
+                <th scope="col">Outstanding Action Plan</th>
+                <th scope="col">Initial Due Date</th>
+                <th scope="col">Reschedule I</th>
+                <th scope="col">Reschedule II</th>
+                <th scope="col">Status</th>
+                <!--<th scope="col">Action</th>-->
             </tr>
+            </thead>
+            <tbody>
             <tr th:each="audit : ${audits}">
                 <td th:text="${audit.auditYear}">tahun audit</td>
                 <td th:text="${audit.auditor}">auditor</td>
@@ -47,10 +53,11 @@
                 <td th:text="${audit.firstRescheduled}">firstRescheduled</td>
                 <td th:text="${audit.secondRescheduled}">secondRescheduled</td>
                 <td th:text="${audit.status}">status</td>
-                <td><a th:href="${'/audits/' + audit.id}+ '/view'">Edit</a> |
-                    <a th:href="${'/audits/' + audit.id}+ '/delete'">Delete</a>
-                </td>
+                <!--<td><a th:href="${'/audits/' + audit.id}+ '/view'">Edit</a> |-->
+                    <!--<a th:href="${'/audits/' + audit.id}+ '/delete'">Delete</a>-->
+                <!--</td>-->
             </tr>
+            </tbody>
         </table>
     </body>
 </html>
