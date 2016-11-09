@@ -17,7 +17,7 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableAutoConfiguration
 @ComponentScan
 @EnableConfigurationProperties(StorageProperties.class)
-public class AdiraApplication implements CommandLineRunner {
+public class AdiraApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AdiraApplication.class, args);
@@ -29,13 +29,5 @@ public class AdiraApplication implements CommandLineRunner {
 			storageService.deleteAll();
 			storageService.init();
 		};
-	}
-
-	@Autowired
-	EmailService emailService;
-
-	@Override
-	public void run(String... strings) throws Exception {
-		emailService.sendEmail(null, null);
 	}
 }

@@ -6,6 +6,7 @@ import com.adira.enumeration.RiskLevel;
 import com.adira.enumeration.Status;
 import com.adira.function.FunctionDate;
 import com.adira.service.audit.AuditService;
+import com.adira.service.email.EmailService;
 import com.adira.service.storage.StorageProperties;
 import com.adira.service.storage.StorageService;
 import org.apache.poi.ss.usermodel.Cell;
@@ -16,8 +17,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.io.*;
-import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.*;
 
@@ -28,8 +29,8 @@ import java.util.*;
 public class WorkbookServiceImpl implements WorkbookService {
 
     public static final String[] fileColumn = {"Tahun Audit", "Auditor", "Domain", "Unit", "PIC", "Isu Audit",
-            "Deskripsi Isu Audit", "Action Plan", "Level Resiko", "Outstanding Action Plan", "Initial Due Date",
-    "Reschedule I", "Reschedule II", "Status"};
+            "Deskripsi Isu Audit", "Action Plan", "Level Resiko", "Outstanding Action Plan", "Initial Due Date", "Status",
+            "Reschedule I", "Reschedule II"};
 
     @Autowired
     private AuditDao auditDao;
@@ -39,6 +40,8 @@ public class WorkbookServiceImpl implements WorkbookService {
     private StorageService storageService;
     @Autowired
     private StorageProperties properties;
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public void createWorkbook() throws IOException {
@@ -78,22 +81,50 @@ public class WorkbookServiceImpl implements WorkbookService {
         String[] headers = getListOfHeader();
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet spreadSheet = workbook.createSheet("Data Audit");
-        XSSFRow row = spreadSheet.createRow(1);
+        int indexRow = 0;
+        Cell cell = null;
+        String fileName;
+
+        XSSFRow row = spreadSheet.createRow(indexRow++);
         int cellId = 0;
 
         for (int i = 0; i <= headers.length - 1; i++) {
-            Cell cell = row.createCell(i);
+            cell = row.createCell(i);
             cell.setCellValue(headers[i]);
         }
 
+        List<Audit> audits = (List<Audit>) auditDao.findAll();
+        Audit audit = audits.get(0);
+        row = spreadSheet.createRow(indexRow);
+        cell = row.createCell(cellId++);
+
+        cell.setCellValue(audit.getAuditYear());
+        cell.setCellValue(audit.getAuditor());
+        cell.setCellValue(audit.getDomain());
+        cell.setCellValue(audit.getUnit());
+        cell.setCellValue(audit.getPic());
+        cell.setCellValue(audit.getAuditIssue());
+        cell.setCellValue(audit.getAuditIssueDescription());
+        cell.setCellValue(audit.getActionPlan());
+        cell.setCellValue(audit.getRiskLevel().toString());
+        cell.setCellValue(audit.getOutstandingActionPlan());
+        cell.setCellValue(audit.getInitialDueDate());
+        cell.setCellValue(audit.getStatus().toString());
+        cell.setCellValue(audit.getFirstRescheduled());
+        cell.setCellValue(audit.getSecondRescheduled());
+
         try {
+            fileName = UUID.randomUUID().toString()+".xlsx";
             String rootLocation = properties.getPathLocation();
-            FileOutputStream fileOutputStream = new FileOutputStream(new File(rootLocation+File.separator+"test-headers.xlsx"));
+            FileOutputStream fileOutputStream = new FileOutputStream(new File(rootLocation+File.separator+fileName));
             workbook.write(fileOutputStream);
             fileOutputStream.close();
+            emailService.sendEmailWithAttachment(fileName);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (MessagingException e) {
             e.printStackTrace();
         }
 

@@ -8,5 +8,5 @@ import javax.mail.MessagingException;
 public interface EmailService {
     void sendEmail(String from, String to) throws MessagingException;
 
-    void sendEmailWithAttachment(String from, String to, String filePath);
+    void sendEmailWithAttachment(String filePath) throws MessagingException;
 }
