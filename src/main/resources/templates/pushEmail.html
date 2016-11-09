@@ -6,7 +6,8 @@
 </head>
 <body>
 
-<form action="#" th:action="@{/pushEmail}" method="POST">
+<form action="#" th:action="@{/pushEmail}" method="POST" th:object="${messages}">
+    <div th:if="${message != null}" th:text="*{message}"></div>
     <input type="submit" value="Push Emial" align="center"/>
 </form>
 

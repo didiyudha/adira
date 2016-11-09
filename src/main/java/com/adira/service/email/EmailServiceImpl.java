@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -49,11 +50,10 @@ public class EmailServiceImpl implements EmailService {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
         mimeMessageHelper.setFrom("didiyudha@gmail.com");
-        mimeMessageHelper.setTo("ini@andikanggakusuma.web.id");
+        mimeMessageHelper.setTo("kioson.xero.integration@gmail.com");
         mimeMessageHelper.setSubject("TEST EMAIL VIA APLIKASI");
-        mimeMessageHelper.setText("TEST EMAIL VIA APLIKASI BRO");
-
-        FileSystemResource file = new FileSystemResource("adira.docx");
+        mimeMessageHelper.setText("INI TEST AJA SI");
+        FileSystemResource file = new FileSystemResource(properties.getPathLocation()+ File.separator+filePath);
         mimeMessageHelper.addAttachment(file.getFilename(), file);
         mailSender.send(mimeMessage);
         System.out.println("Email has been sent");
@@ -77,7 +77,7 @@ public class EmailServiceImpl implements EmailService {
             stringBuilder.append("</td>");
         }
 
-        stringBuilder.append("</tr></table>");
+        stringBuilder.append("</tr>");
 
         return stringBuilder.toString();
     }
@@ -90,6 +90,7 @@ public class EmailServiceImpl implements EmailService {
 
     private String setContentAudit(Audit audit)  {
         StringBuilder stringBuilder = new StringBuilder("");
+        stringBuilder.append("<tr>");
         stringBuilder.append("<td>");
         stringBuilder.append(audit.getAuditYear());
         stringBuilder.append("</td>");
@@ -145,6 +146,7 @@ public class EmailServiceImpl implements EmailService {
         stringBuilder.append("<td>");
         stringBuilder.append(audit.getSecondRescheduled());
         stringBuilder.append("</td>");
+        stringBuilder.append("</tr>");
 
         return stringBuilder.toString();
     }

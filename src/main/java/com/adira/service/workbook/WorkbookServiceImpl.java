@@ -96,21 +96,47 @@ public class WorkbookServiceImpl implements WorkbookService {
         List<Audit> audits = (List<Audit>) auditDao.findAll();
         Audit audit = audits.get(0);
         row = spreadSheet.createRow(indexRow);
-        cell = row.createCell(cellId++);
 
+        cell = row.createCell(cellId++);
         cell.setCellValue(audit.getAuditYear());
+
+        cell = row.createCell(cellId++);
         cell.setCellValue(audit.getAuditor());
+
+        cell = row.createCell(cellId++);
         cell.setCellValue(audit.getDomain());
+
+        cell = row.createCell(cellId++);
         cell.setCellValue(audit.getUnit());
+
+        cell = row.createCell(cellId++);
         cell.setCellValue(audit.getPic());
+
+        cell = row.createCell(cellId++);
         cell.setCellValue(audit.getAuditIssue());
+
+        cell = row.createCell(cellId++);
         cell.setCellValue(audit.getAuditIssueDescription());
+
+        cell = row.createCell(cellId++);
         cell.setCellValue(audit.getActionPlan());
+
+        cell = row.createCell(cellId++);
         cell.setCellValue(audit.getRiskLevel().toString());
+
+        cell = row.createCell(cellId++);
         cell.setCellValue(audit.getOutstandingActionPlan());
+
+        cell = row.createCell(cellId++);
         cell.setCellValue(audit.getInitialDueDate());
+
+        cell = row.createCell(cellId++);
         cell.setCellValue(audit.getStatus().toString());
+
+        cell = row.createCell(cellId++);
         cell.setCellValue(audit.getFirstRescheduled());
+
+        cell = row.createCell(cellId++);
         cell.setCellValue(audit.getSecondRescheduled());
 
         try {
