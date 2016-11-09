@@ -11,4 +11,6 @@ public interface AuditService {
     List<Audit> findAll();
 
     Audit findById(String id);
+
+    String generateAuditName(Audit audit);
 }

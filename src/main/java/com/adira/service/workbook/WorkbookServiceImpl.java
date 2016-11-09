@@ -180,6 +180,8 @@ public class WorkbookServiceImpl implements WorkbookService {
         XSSFSheet sheet = workbook.getSheetAt(0);
 
         Iterator<Row> rowIterator = sheet.iterator();
+        List<Audit> audits = new ArrayList<>();
+        int iAudit = 0;
 
         while (rowIterator.hasNext()) {
             Row row = rowIterator.next();
@@ -210,11 +212,18 @@ public class WorkbookServiceImpl implements WorkbookService {
 
             if (columnValues.size() > 0) {
                 Audit audit = new Audit();
+                iAudit = iAudit + 1;
                 setAuditProperty(columnValues, audit);
-                auditDao.save(audit);
+                String refNo = auditService.generateAuditName(audit);
+                refNo.concat("/");
+                refNo = refNo + String.valueOf(iAudit);
+                audit.setReferenceNo(refNo);
+                audits.add(audit);
 
             }
         }
+
+        if (audits != null) auditDao.save(audits);
 
     }
 

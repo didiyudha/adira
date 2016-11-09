@@ -1,7 +1,10 @@
 package com.adira.job;
 
 import com.adira.dao.AuditDao;
+import com.adira.entity.Audit;
 import com.adira.service.audit.AuditService;
+
+import java.util.List;
 
 /**
  * Created by didiyudha on 21/10/16.
@@ -20,5 +23,6 @@ public class AuditJob implements Runnable {
         /**
          * Do send email here
          */
+        List<Audit> audits = (List<Audit>) auditDao.findAll();
     }
 }

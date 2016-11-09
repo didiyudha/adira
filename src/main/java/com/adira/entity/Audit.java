@@ -85,6 +85,9 @@ public class Audit {
     )
     private Set<Comment> comments = new HashSet<>();
 
+    @Column(name = "reference_no", nullable = false)
+    private String referenceNo;
+
     public Audit() {
     }
 
@@ -241,5 +244,13 @@ public class Audit {
 
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
+    }
+
+    public String getReferenceNo() {
+        return referenceNo;
+    }
+
+    public void setReferenceNo(String referenceNo) {
+        this.referenceNo = referenceNo;
     }
 }
