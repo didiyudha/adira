@@ -9,11 +9,12 @@ import com.adira.service.audit.AuditService;
 import com.adira.service.email.EmailService;
 import com.adira.service.storage.StorageProperties;
 import com.adira.service.storage.StorageService;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +47,7 @@ public class WorkbookServiceImpl implements WorkbookService {
     @Override
     public void createWorkbook() throws IOException {
         List<Audit> auditList = (List<Audit>) auditDao.findAll();
+        Audit audit = auditList.get(0);
         // create blank workbook
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet spreadSheet = workbook.createSheet("Employee Info");
@@ -80,17 +82,32 @@ public class WorkbookServiceImpl implements WorkbookService {
     public void createWorkBook(List<String> contens) {
         String[] headers = getListOfHeader();
         XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFCellStyle style=workbook.createCellStyle();
+        XSSFFont font = workbook.createFont();
+        font.setBold(true);
+        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+        style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+        style.setFont(font);
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setFillForegroundColor(HSSFColor.LIME.index);
+        style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+
+
         XSSFSheet spreadSheet = workbook.createSheet("Data Audit");
         int indexRow = 0;
         Cell cell = null;
         String fileName;
 
         XSSFRow row = spreadSheet.createRow(indexRow++);
+
         int cellId = 0;
 
         for (int i = 0; i <= headers.length - 1; i++) {
             cell = row.createCell(i);
             cell.setCellValue(headers[i]);
+            cell.setCellStyle(style);
         }
 
         List<Audit> audits = (List<Audit>) auditDao.findAll();

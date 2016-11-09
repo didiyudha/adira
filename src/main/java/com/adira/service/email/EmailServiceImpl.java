@@ -46,13 +46,19 @@ public class EmailServiceImpl implements EmailService {
     public void sendEmailWithAttachment(String filePath) throws MessagingException {
         List<Audit> auditList = (List<Audit>) auditDao.findAll();
         Audit audit = auditList.get(0);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder
+                .append(createHtmlHeader())
+                .append(createHeaderTable())
+                .append(setContentAudit(audit))
+                .append(createHtmlFooter());
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
         mimeMessageHelper.setFrom("didiyudha@gmail.com");
         mimeMessageHelper.setTo("kioson.xero.integration@gmail.com");
         mimeMessageHelper.setSubject("TEST EMAIL VIA APLIKASI");
-        mimeMessageHelper.setText("INI TEST AJA SI");
+        mimeMessageHelper.setText("INI TEST AJA SI", stringBuilder.toString());
         FileSystemResource file = new FileSystemResource(properties.getPathLocation()+ File.separator+filePath);
         mimeMessageHelper.addAttachment(file.getFilename(), file);
         mailSender.send(mimeMessage);
@@ -60,9 +66,32 @@ public class EmailServiceImpl implements EmailService {
     }
 
     private String createHtmlHeader() {
-        String htmlHeader = "<html>" +
-                "<body>";
-        return htmlHeader;
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder
+                .append("<html>")
+                .append("<head>" +
+                        "<style>" +
+                        "table {" +
+                        "    font-family: arial, sans-serif;" +
+                        "    border-collapse: collapse;" +
+                        "    width: 100%;" +
+                        "}" +
+                        "" +
+                        "td, th {" +
+                        "    border: 1px solid #dddddd;" +
+                        "    text-align: left;" +
+                        "    padding: 8px;" +
+                        "}" +
+                        "" +
+                        "tr:nth-child(even) {" +
+                        "    background-color: #dddddd;" +
+                        "}" +
+                        "</style>" +
+                        "</head>")
+                .append("<body>");
+
+        return stringBuilder.toString();
     }
 
     private String createHeaderTable() {
