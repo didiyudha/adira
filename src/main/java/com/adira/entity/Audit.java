@@ -38,6 +38,7 @@ public class Audit {
     private String pic;
 
     @Column(name = "audit_issue")
+    @Type(type = "text")
     private String auditIssue;
 
     @Column(name = "audit_issue_description")

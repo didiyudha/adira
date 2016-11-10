@@ -1,7 +1,10 @@
 package com.adira.service.email;
 
-import com.adira.dao.AuditDao;
+import com.adira.dao.AuditRepository;
+import com.adira.dao.AuditTokenRepository;
 import com.adira.entity.Audit;
+import com.adira.entity.AuditToken;
+import com.adira.service.security.SecurityService;
 import com.adira.service.storage.StorageProperties;
 import com.adira.service.workbook.WorkbookServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +26,13 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private JavaMailSender mailSender;
     @Autowired
-    private AuditDao auditDao;
+    private AuditRepository auditRepository;
     @Autowired
-    StorageProperties properties;
+    private StorageProperties properties;
+    @Autowired
+    private SecurityService securityService;
+    @Autowired
+    private AuditTokenRepository auditTokenRepository;
 
     @Override
     public void sendEmail(String from, String to) throws MessagingException {
@@ -44,13 +51,23 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendEmailWithAttachment(String filePath) throws MessagingException {
-        List<Audit> auditList = (List<Audit>) auditDao.findAll();
+
+        List<Audit> auditList = (List<Audit>) auditRepository.findAll();
         Audit audit = auditList.get(0);
+        String token = securityService.generateJwtToken(audit.getId());
+
+        /**
+         * Create audit token that maps audit and active token
+         */
+        AuditToken auditToken = new AuditToken(audit, token, AuditToken.AuditTokenStatus.ACTIVE);
+        auditTokenRepository.save(auditToken);
+
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder
                 .append(createHtmlHeader())
                 .append(createHeaderTable())
                 .append(setContentAudit(audit))
+                .append(createLink(audit.getId(), token))
                 .append(createHtmlFooter());
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -62,6 +79,7 @@ public class EmailServiceImpl implements EmailService {
         FileSystemResource file = new FileSystemResource(properties.getPathLocation()+ File.separator+filePath);
         mimeMessageHelper.addAttachment(file.getFilename(), file);
         mailSender.send(mimeMessage);
+
         System.out.println("Email has been sent");
     }
 
@@ -176,7 +194,16 @@ public class EmailServiceImpl implements EmailService {
         stringBuilder.append(audit.getSecondRescheduled());
         stringBuilder.append("</td>");
         stringBuilder.append("</tr>");
+        stringBuilder.append("</table>");
 
+        return stringBuilder.toString();
+    }
+
+    private String createLink(String auditId, String token) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("<div>")
+                .append("<p><a href=http://localhost:8081/auditee/"+auditId+"?token="+token+"><h1>Visit our Page</h1></a></p>")
+                .append("</div>");
         return stringBuilder.toString();
     }
 }

@@ -1,6 +1,6 @@
 package com.adira.service.workbook;
 
-import com.adira.dao.AuditDao;
+import com.adira.dao.AuditRepository;
 import com.adira.entity.Audit;
 import com.adira.enumeration.RiskLevel;
 import com.adira.enumeration.Status;
@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.io.*;
+import java.nio.file.Files;
 import java.text.ParseException;
 import java.util.*;
 
@@ -34,7 +35,7 @@ public class WorkbookServiceImpl implements WorkbookService {
             "Reschedule I", "Reschedule II"};
 
     @Autowired
-    private AuditDao auditDao;
+    private AuditRepository auditRepository;
     @Autowired
     private AuditService auditService;
     @Autowired
@@ -46,7 +47,7 @@ public class WorkbookServiceImpl implements WorkbookService {
 
     @Override
     public void createWorkbook() throws IOException {
-        List<Audit> auditList = (List<Audit>) auditDao.findAll();
+        List<Audit> auditList = (List<Audit>) auditRepository.findAll();
         Audit audit = auditList.get(0);
         // create blank workbook
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -108,9 +109,10 @@ public class WorkbookServiceImpl implements WorkbookService {
             cell = row.createCell(i);
             cell.setCellValue(headers[i]);
             cell.setCellStyle(style);
+            workbook.getSheetAt(0).autoSizeColumn(i);
         }
 
-        List<Audit> audits = (List<Audit>) auditDao.findAll();
+        List<Audit> audits = (List<Audit>) auditRepository.findAll();
         Audit audit = audits.get(0);
         row = spreadSheet.createRow(indexRow);
 
@@ -155,6 +157,7 @@ public class WorkbookServiceImpl implements WorkbookService {
 
         cell = row.createCell(cellId++);
         cell.setCellValue(audit.getSecondRescheduled());
+        spreadSheet.autoSizeColumn(5);
 
         try {
             fileName = UUID.randomUUID().toString()+".xlsx";
@@ -223,7 +226,8 @@ public class WorkbookServiceImpl implements WorkbookService {
             }
         }
 
-        if (audits != null) auditDao.save(audits);
+        if (audits != null) auditRepository.save(audits);
+        Files.deleteIfExists(storageService.load(fileName));
 
     }
 

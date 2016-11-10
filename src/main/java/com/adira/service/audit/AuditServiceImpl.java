@@ -1,6 +1,6 @@
 package com.adira.service.audit;
 
-import com.adira.dao.AuditDao;
+import com.adira.dao.AuditRepository;
 import com.adira.entity.Audit;
 import com.adira.function.FunctionDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +18,18 @@ public class AuditServiceImpl implements AuditService {
     private static final String separator = "/";
 
     @Autowired
-    AuditDao auditDao;
+    AuditRepository auditRepository;
 
     @Override
     public List<Audit> findAll() {
-        return auditDao.findByDeletedFalse();
+        return auditRepository.findByDeletedFalse();
     }
 
     @Override
     public Audit findById(String id) {
         if (id == null || id.equals(""))
             return null;
-        return auditDao.findByIdAndDeletedFalse(id);
+        return auditRepository.findByIdAndDeletedFalse(id);
     }
 
     @Override

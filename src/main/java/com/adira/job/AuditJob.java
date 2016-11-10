@@ -1,6 +1,6 @@
 package com.adira.job;
 
-import com.adira.dao.AuditDao;
+import com.adira.dao.AuditRepository;
 import com.adira.entity.Audit;
 import com.adira.service.audit.AuditService;
 
@@ -10,11 +10,11 @@ import java.util.List;
  * Created by didiyudha on 21/10/16.
  */
 public class AuditJob implements Runnable {
-    private AuditDao auditDao;
+    private AuditRepository auditRepository;
     private AuditService auditService;
 
-    public AuditJob(AuditDao auditDao, AuditService auditService) {
-        this.auditDao = auditDao;
+    public AuditJob(AuditRepository auditRepository, AuditService auditService) {
+        this.auditRepository = auditRepository;
         this.auditService = auditService;
     }
 
@@ -23,6 +23,6 @@ public class AuditJob implements Runnable {
         /**
          * Do send email here
          */
-        List<Audit> audits = (List<Audit>) auditDao.findAll();
+        List<Audit> audits = (List<Audit>) auditRepository.findAll();
     }
 }

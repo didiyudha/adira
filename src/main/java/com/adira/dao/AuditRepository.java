@@ -10,7 +10,7 @@ import java.util.List;
  * Created by didi-realtime on 27/09/16.
  */
 @Repository
-public interface AuditDao extends PagingAndSortingRepository<Audit, String> {
+public interface AuditRepository extends PagingAndSortingRepository<Audit, String> {
     List<Audit> findByDeletedFalse();
 
     Audit findByIdAndDeletedFalse(String id);

@@ -1,23 +1,18 @@
-<html xmlns:th="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>Audit</title>
-        <meta charset="UTF-8"/>
-        <link rel="stylesheet" th:href="@{/css/style.css}" href="../../css/style.css" />
-    </head>
-    <body>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
 
-        <form action="#" th:action="@{/logout}" method="POST">
-            <input type="submit" value="Logout" align="center"/>
-        </form>
+    <title>Data Audit</title>
 
-        <form action="#" th:action="@{/audits/form}" method="GET">
-            <input type="submit" value="Tambah Data" align="center"/>
-        </form>
-        <form action="#" th:action="@{/audits}" method="GET">
-            <input type="date" align="center" name="date"/>
-            <input type="submit" value="Cari" align="center"/>
-        </form>
-        <table>
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+    <!--<div th:if="${not #lists.isEmpty(audits)}">-->
+    <div>
+        <h2>Data Audit</h2>
+        <table class="table table-striped">
             <thead>
             <tr>
                 <th scope="col">Tahun Audit</th>
@@ -25,15 +20,16 @@
                 <th scope="col">Domain</th>
                 <th scope="col">Unit</th>
                 <th scope="col">PIC</th>
-                <th scope="col">Isu Audit</th>
-                <th scope="col">Deskripsi Isu Audit</th>
-                <th scope="col">Action Plan</th>
-                <th scope="col">Level Resiko</th>
-                <th scope="col">Outstanding Action Plan</th>
-                <th scope="col">Initial Due Date</th>
-                <th scope="col">Reschedule I</th>
-                <th scope="col">Reschedule II</th>
-                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+                <!--<th scope="col">Isu Audit</th>-->
+                <!--<th scope="col">Deskripsi Isu Audit</th>-->
+                <!--<th scope="col">Action Plan</th>-->
+                <!--<th scope="col">Level Resiko</th>-->
+                <!--<th scope="col">Outstanding Action Plan</th>-->
+                <!--<th scope="col">Initial Due Date</th>-->
+                <!--<th scope="col">Reschedule I</th>-->
+                <!--<th scope="col">Reschedule II</th>-->
+                <!--<th scope="col">Status</th>-->
                 <!--<th scope="col">Action</th>-->
             </tr>
             </thead>
@@ -44,20 +40,22 @@
                 <td th:text="${audit.domain}">domain</td>
                 <td th:text="${audit.unit}">unit</td>
                 <td th:text="${audit.pic}">pic</td>
-                <td th:text="${audit.auditIssue}">audit issue</td>
-                <td th:text="${audit.auditIssueDescription}">Audit Issue Description</td>
-                <td th:text="${audit.actionPlan}">actionPlan</td>
-                <td th:text="${audit.riskLevel}">riskLevel</td>
-                <td th:text="${audit.outstandingActionPlan}">outstandingActionPlan</td>
-                <td th:text="${audit.initialDueDate}">initialDueDate</td>
-                <td th:text="${audit.firstRescheduled}">firstRescheduled</td>
-                <td th:text="${audit.secondRescheduled}">secondRescheduled</td>
-                <td th:text="${audit.status}">status</td>
-                <!--<td><a th:href="${'/audits/' + audit.id}+ '/view'">Edit</a> |-->
-                    <!--<a th:href="${'/audits/' + audit.id}+ '/delete'">Delete</a>-->
-                <!--</td>-->
+                <!--<td th:text="${audit.auditIssue}">audit issue</td>-->
+                <!--<td th:text="${audit.auditIssueDescription}">Audit Issue Description</td>-->
+                <!--<td th:text="${audit.actionPlan}">actionPlan</td>-->
+                <!--<td th:text="${audit.riskLevel}">riskLevel</td>-->
+                <!--<td th:text="${audit.outstandingActionPlan}">outstandingActionPlan</td>-->
+                <!--<td th:text="${audit.initialDueDate}">initialDueDate</td>-->
+                <!--<td th:text="${audit.firstRescheduled}">firstRescheduled</td>-->
+                <!--<td th:text="${audit.secondRescheduled}">secondRescheduled</td>-->
+                <!--<td th:text="${audit.status}">status</td>-->
+                <td><a th:href="${'/audits/' + audit.id}+ '/view'">Show Details</a>
+                </td>
             </tr>
             </tbody>
         </table>
-    </body>
+
+    </div>
+</div>
+</body>
 </html>

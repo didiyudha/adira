@@ -1,0 +1,34 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Audit Information</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/form.css}" href="../../css/form.css" />
+</head>
+<body>
+<form action="#" th:action="@{/auditee}" th:object="${audit}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <fieldset>
+        <legend>Audit Information:</legend>
+        Refenece Number: <input type="text" th:field="*{referenceNo}" id="referenceNo"/>
+        <br/>
+        PIC: <input type="text" th:field="*{pic}" id="pic"/>
+        <br/>
+        Auditor: <input type="text" th:field="*{auditor}" id="auditor"/>
+        <br/>
+        Audit Issue: <input type="text" th:field="*{auditIssue}" id="auditIssue"/>
+        <br/>
+        Comment:
+        <br/>
+        <br/>
+        <textarea  rows = "20" cols = "80" th:field = "*{comment}" ></textarea>
+        <br/>
+        <br/>
+        <br/>
+        File: <input type="file" name="file" />
+        <br/>
+        <br/><br/>
+        <input type="submit" value="Submit"/>
+    </fieldset>
+</form>
+</body>
+</html>

@@ -1,6 +1,6 @@
 package com.adira.controller;
 
-import com.adira.dao.AuditDao;
+import com.adira.dao.AuditRepository;
 import com.adira.entity.Audit;
 import com.adira.service.audit.AuditService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import java.util.List;
 @RequestMapping(value = "audits")
 public class AuditController {
     @Autowired
-    private AuditDao auditDao;
+    private AuditRepository auditRepository;
     @Autowired
     private AuditService auditService;
 
@@ -44,7 +44,7 @@ public class AuditController {
         if (bindingResult.hasErrors()) {
             return "form";
         }
-        auditDao.save(audit);
+        auditRepository.save(audit);
         return "redirect:/audits";
     }
 
@@ -64,11 +64,11 @@ public class AuditController {
 
     @RequestMapping(value = "/{id}/delete")
     public String delete(@PathVariable("id") String id) {
-        Audit audit = auditDao.findOne(id);
+        Audit audit = auditRepository.findOne(id);
 
         if (audit != null) {
             audit.setDeleted(true);
-            auditDao.save(audit);
+            auditRepository.save(audit);
         }
 
         return "redirect:/audits";

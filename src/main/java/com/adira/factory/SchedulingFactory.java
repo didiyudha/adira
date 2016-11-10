@@ -1,6 +1,6 @@
 package com.adira.factory;
 
-import com.adira.dao.AuditDao;
+import com.adira.dao.AuditRepository;
 import com.adira.job.AuditJob;
 import com.adira.service.audit.AuditService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class SchedulingFactory {
     private final String cronExpression = "0 1 12 1/1 * ?";
 
     @Autowired
-    private AuditDao auditDao;
+    private AuditRepository auditRepository;
     @Autowired
     private AuditService auditService;
     @Autowired
@@ -27,6 +27,6 @@ public class SchedulingFactory {
 
     @PostConstruct
     public void init() {
-        taskScheduler.schedule(new AuditJob(auditDao, auditService), new CronTrigger(cronExpression));
+        taskScheduler.schedule(new AuditJob(auditRepository, auditService), new CronTrigger(cronExpression));
     }
 }
