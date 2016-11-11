@@ -161,7 +161,7 @@ public class WorkbookServiceImpl implements WorkbookService {
 
         try {
             fileName = UUID.randomUUID().toString()+".xlsx";
-            String rootLocation = properties.getPathLocation();
+            String rootLocation = properties.getUploadPath();
             FileOutputStream fileOutputStream = new FileOutputStream(new File(rootLocation+File.separator+fileName));
             workbook.write(fileOutputStream);
             fileOutputStream.close();

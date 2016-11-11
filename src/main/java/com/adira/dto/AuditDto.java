@@ -10,15 +10,7 @@ public class AuditDto {
     private String comment;
     private String pic;
     private String auditor;
-
-    public AuditDto(String id, String referenceNo, String auditIssue, String comment, String pic, String auditor) {
-        this.id = id;
-        this.referenceNo = referenceNo;
-        this.auditIssue = auditIssue;
-        this.comment = comment;
-        this.pic = pic;
-        this.auditor = auditor;
-    }
+    private String token;
 
     public AuditDto() {
     }
@@ -69,5 +61,13 @@ public class AuditDto {
 
     public void setAuditor(String auditor) {
         this.auditor = auditor;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

@@ -1,5 +1,6 @@
 package com.adira.service.storage;
 
+import com.adira.enumeration.DocumentType;
 import com.adira.exeption.StorageException;
 import com.adira.exeption.StorageFileNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -22,16 +24,19 @@ import java.util.stream.Stream;
 @Service("storageService")
 public class StorageServiceImpl implements StorageService {
     private final Path rootLocation;
+    private final Path auditeePath;
 
     @Autowired
     public StorageServiceImpl(StorageProperties properties) {
-        this.rootLocation = Paths.get(properties.getPathLocation());
+        this.rootLocation = Paths.get(properties.getUploadPath());
+        this.auditeePath = Paths.get(properties.getAuditeePath());
     }
 
     @Override
     public void init() {
         try {
             Files.createDirectory(rootLocation);
+            Files.createDirectory(auditeePath);
         } catch (IOException e) {
             throw new StorageException("Could not initialize storage", e);
         }
@@ -47,6 +52,29 @@ public class StorageServiceImpl implements StorageService {
             }
 
             Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
+
+        } catch (IOException e) {
+            throw new StorageException("Failed to store file "+ file.getOriginalFilename(), e);
+        }
+    }
+
+    @Override
+    public void store(MultipartFile file, DocumentType documentType) {
+        try {
+
+            if (file.isEmpty()) {
+                throw new StorageException("Failed to store empty file "+ file.getOriginalFilename());
+            }
+
+            switch (documentType.toString()) {
+                case "DATA":
+                    Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
+                    break;
+                case "AUDITEE":
+                    Files.copy(file.getInputStream(), this.auditeePath.resolve(file.getOriginalFilename()));
+                    break;
+            }
+
 
         } catch (IOException e) {
             throw new StorageException("Failed to store file "+ file.getOriginalFilename(), e);

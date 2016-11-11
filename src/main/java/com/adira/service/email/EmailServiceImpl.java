@@ -76,7 +76,7 @@ public class EmailServiceImpl implements EmailService {
         mimeMessageHelper.setTo("kioson.xero.integration@gmail.com");
         mimeMessageHelper.setSubject("TEST EMAIL VIA APLIKASI");
         mimeMessageHelper.setText("INI TEST AJA SI", stringBuilder.toString());
-        FileSystemResource file = new FileSystemResource(properties.getPathLocation()+ File.separator+filePath);
+        FileSystemResource file = new FileSystemResource(properties.getUploadPath()+ File.separator+filePath);
         mimeMessageHelper.addAttachment(file.getFilename(), file);
         mailSender.send(mimeMessage);
 

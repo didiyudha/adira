@@ -11,13 +11,22 @@ public class StorageProperties {
     /**
      * Folder to store files
      */
-    private String pathLocation = "upload-dir";
+    private String uploadPath = "upload-dir";
+    private String auditeePath = "auditee-dir";
 
-    public String getPathLocation() {
-        return pathLocation;
+    public String getAuditeePath() {
+        return auditeePath;
     }
 
-    public void setPathLocation(String pathLocation) {
-        this.pathLocation = pathLocation;
+    public void setAuditeePath(String auditeePath) {
+        this.auditeePath = auditeePath;
+    }
+
+    public String getUploadPath() {
+        return uploadPath;
+    }
+
+    public void setUploadPath(String uploadPath) {
+        this.uploadPath = uploadPath;
     }
 }

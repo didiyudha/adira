@@ -7,6 +7,7 @@
 <body>
 <form action="#" th:action="@{/auditee}" th:object="${audit}" method="post">
     <input type="hidden" th:field="*{id}"/>
+    <input type="hidden" th:field="*{token}">
     <fieldset>
         <legend>Audit Information:</legend>
         Refenece Number: <input type="text" th:field="*{referenceNo}" id="referenceNo"/>

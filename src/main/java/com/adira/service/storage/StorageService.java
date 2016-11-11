@@ -1,5 +1,6 @@
 package com.adira.service.storage;
 
+import com.adira.enumeration.DocumentType;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,6 +14,8 @@ public interface StorageService {
     void init();
 
     void store(MultipartFile file);
+
+    void store(MultipartFile file, DocumentType documentType);
 
     Stream<Path> loadAll();
 
