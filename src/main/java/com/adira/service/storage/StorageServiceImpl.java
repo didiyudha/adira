@@ -35,8 +35,12 @@ public class StorageServiceImpl implements StorageService {
     @Override
     public void init() {
         try {
+
             Files.createDirectory(rootLocation);
-            Files.createDirectory(auditeePath);
+
+            if (!Files.isDirectory(rootLocation))
+                Files.createDirectory(auditeePath);
+
         } catch (IOException e) {
             throw new StorageException("Could not initialize storage", e);
         }
