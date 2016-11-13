@@ -78,7 +78,7 @@ public class Audit {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private boolean deleted = false;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "audit_comments",
             joinColumns = @JoinColumn(name = "audit_id"),

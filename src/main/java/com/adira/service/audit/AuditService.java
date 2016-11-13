@@ -13,4 +13,6 @@ public interface AuditService {
     Audit findById(String id);
 
     String generateAuditName(Audit audit);
+
+    void inActiveToken(String auditId, String token);
 }

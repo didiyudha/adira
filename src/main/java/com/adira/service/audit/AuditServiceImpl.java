@@ -1,7 +1,9 @@
 package com.adira.service.audit;
 
 import com.adira.dao.AuditRepository;
+import com.adira.dao.AuditTokenRepository;
 import com.adira.entity.Audit;
+import com.adira.entity.AuditToken;
 import com.adira.function.FunctionDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +20,9 @@ public class AuditServiceImpl implements AuditService {
     private static final String separator = "/";
 
     @Autowired
-    AuditRepository auditRepository;
+    private AuditRepository auditRepository;
+    @Autowired
+    private AuditTokenRepository auditTokenRepository;
 
     @Override
     public List<Audit> findAll() {
@@ -51,5 +55,19 @@ public class AuditServiceImpl implements AuditService {
                 .append(separator);
 
         return sb.toString();
+    }
+
+    @Override
+    public void inActiveToken(String auditId, String token) {
+        if (auditId != null && token != null) {
+            if (!auditId.equals("") && !token.equals("")) {
+                AuditToken auditToken = auditTokenRepository.findByAuditAndToken(auditId, token);
+
+                if (auditToken != null) {
+                    auditToken.setStatus(AuditToken.AuditTokenStatus.INACTIVE);
+                    auditTokenRepository.save(auditToken);
+                }
+            }
+        }
     }
 }

@@ -20,7 +20,7 @@ import java.util.Map;
  * Created by didiyudha on 21/10/16.
  */
 @Controller
-public class TestController {
+public class PushEmailController {
     @Autowired
     private WorkbookService workbookService;
 

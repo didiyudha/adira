@@ -3,7 +3,7 @@ package com.adira.service.email;
 import com.adira.dao.AuditRepository;
 import com.adira.dao.AuditTokenRepository;
 import com.adira.entity.Audit;
-import com.adira.entity.AuditToken;
+import com.adira.enumeration.DocumentType;
 import com.adira.service.security.SecurityService;
 import com.adira.service.storage.StorageProperties;
 import com.adira.service.workbook.WorkbookServiceImpl;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
-import java.util.List;
 
 /**
  * Created by didiyudha on 21/10/16.
@@ -35,33 +34,47 @@ public class EmailServiceImpl implements EmailService {
     private AuditTokenRepository auditTokenRepository;
 
     @Override
-    public void sendEmail(String from, String to) throws MessagingException {
+    public void sendEmail(String to) throws MessagingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
         mimeMessageHelper.setFrom("didiyudha@gmail.com");
-        mimeMessageHelper.setTo("ini@andikanggakusuma.web.id");
+        mimeMessageHelper.setTo(to);
         mimeMessageHelper.setSubject("TEST EMAIL VIA APLIKASI");
         mimeMessageHelper.setText("TEST EMAIL VIA APLIKASI BRO");
-
-        FileSystemResource file = new FileSystemResource("adira.docx");
-        mimeMessageHelper.addAttachment(file.getFilename(), file);
         mailSender.send(mimeMessage);
         System.out.println("Email has been sent");
     }
 
     @Override
-    public void sendEmailWithAttachment(String filePath) throws MessagingException {
+    public void sendEmailWithAttachment(String to, String filePath, String content, DocumentType documentType) throws MessagingException {
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        FileSystemResource file = null;
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+        mimeMessageHelper.setFrom("didiyudha@gmail.com");
+        mimeMessageHelper.setTo(to);
+        mimeMessageHelper.setSubject("TEST EMAIL VIA APLIKASI");
+        mimeMessageHelper.setText("INI TEST AJA SI", content);
 
-        List<Audit> auditList = (List<Audit>) auditRepository.findAll();
-        Audit audit = auditList.get(0);
-        String token = securityService.generateJwtToken(audit.getId());
+        switch (documentType.toString().toUpperCase()) {
+            case "DATA":
+                    file = new FileSystemResource(properties.getUploadPath()+ File.separator+filePath);
+                break;
+            case "AUDITEE":
+                file = new FileSystemResource(properties.getAuditeePath()+ File.separator+filePath);
+                break;
+            default:
+                file = new FileSystemResource(properties.getUploadPath()+ File.separator+filePath);
+                break;
+        }
 
-        /**
-         * Create audit token that maps audit and active token
-         */
-        AuditToken auditToken = new AuditToken(audit, token, AuditToken.AuditTokenStatus.ACTIVE);
-        auditTokenRepository.save(auditToken);
+        mimeMessageHelper.addAttachment(file.getFilename(), file);
+        mailSender.send(mimeMessage);
 
+        System.out.println("Email has been sent");
+    }
+
+    @Override
+    public String constructHtmlContent(Audit audit, String token) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder
                 .append(createHtmlHeader())
@@ -69,18 +82,7 @@ public class EmailServiceImpl implements EmailService {
                 .append(setContentAudit(audit))
                 .append(createLink(audit.getId(), token))
                 .append(createHtmlFooter());
-
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-        mimeMessageHelper.setFrom("didiyudha@gmail.com");
-        mimeMessageHelper.setTo("kioson.xero.integration@gmail.com");
-        mimeMessageHelper.setSubject("TEST EMAIL VIA APLIKASI");
-        mimeMessageHelper.setText("INI TEST AJA SI", stringBuilder.toString());
-        FileSystemResource file = new FileSystemResource(properties.getUploadPath()+ File.separator+filePath);
-        mimeMessageHelper.addAttachment(file.getFilename(), file);
-        mailSender.send(mimeMessage);
-
-        System.out.println("Email has been sent");
+        return stringBuilder.toString();
     }
 
     private String createHtmlHeader() {

@@ -1,12 +1,16 @@
 package com.adira.service.workbook;
 
 import com.adira.dao.AuditRepository;
+import com.adira.dao.AuditTokenRepository;
 import com.adira.entity.Audit;
+import com.adira.entity.AuditToken;
+import com.adira.enumeration.DocumentType;
 import com.adira.enumeration.RiskLevel;
 import com.adira.enumeration.Status;
 import com.adira.function.FunctionDate;
 import com.adira.service.audit.AuditService;
 import com.adira.service.email.EmailService;
+import com.adira.service.security.SecurityService;
 import com.adira.service.storage.StorageProperties;
 import com.adira.service.storage.StorageService;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -44,6 +48,10 @@ public class WorkbookServiceImpl implements WorkbookService {
     private StorageProperties properties;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private SecurityService securityService;
+    @Autowired
+    private AuditTokenRepository auditTokenRepository;
 
     @Override
     public void createWorkbook() throws IOException {
@@ -165,7 +173,21 @@ public class WorkbookServiceImpl implements WorkbookService {
             FileOutputStream fileOutputStream = new FileOutputStream(new File(rootLocation+File.separator+fileName));
             workbook.write(fileOutputStream);
             fileOutputStream.close();
-            emailService.sendEmailWithAttachment(fileName);
+
+            /**
+             * send email with attachment && create token
+             */
+            String token = securityService.generateJwtToken(audit.getId());
+            String htmlContent = emailService.constructHtmlContent(audit, token);
+            emailService.sendEmailWithAttachment("kioson.xero.integration@gmail.com", fileName, htmlContent, DocumentType.DATA);
+
+            /**
+             * Create audit token that maps audit and active token
+             */
+
+            AuditToken auditToken = new AuditToken(audit, token, AuditToken.AuditTokenStatus.ACTIVE);
+            auditTokenRepository.save(auditToken);
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

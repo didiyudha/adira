@@ -4,10 +4,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" th:href="@{/css/form.css}" href="../../css/form.css" />
 </head>
-<body>
-<form action="#" th:action="@{/auditee}" th:object="${audit}" method="post">
+<body> +
+<form action="#" th:action="@{'/auditee/'+${audit.id}}" th:object="${audit}" method="post" enctype="multipart/form-data">
     <input type="hidden" th:field="*{id}"/>
-    <input type="hidden" th:field="*{token}">
+    <input type="hidden" th:field="*{token}"/>
     <fieldset>
         <legend>Audit Information:</legend>
         Refenece Number: <input type="text" th:field="*{referenceNo}" id="referenceNo"/>
@@ -25,7 +25,7 @@
         <br/>
         <br/>
         <br/>
-        File: <input type="file" name="file" />
+        File: <input type="file" name="auditeeFile" />
         <br/>
         <br/><br/>
         <input type="submit" value="Submit"/>
