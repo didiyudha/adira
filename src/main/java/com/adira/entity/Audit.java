@@ -2,11 +2,14 @@ package com.adira.entity;
 
 import com.adira.enumeration.RiskLevel;
 import com.adira.enumeration.Status;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -84,6 +87,7 @@ public class Audit {
             joinColumns = @JoinColumn(name = "audit_id"),
             inverseJoinColumns = @JoinColumn(name = "comment_id")
     )
+    @OrderBy("createdOn DESC ")
     private Set<Comment> comments = new HashSet<>();
 
     @Column(name = "reference_no", nullable = false)

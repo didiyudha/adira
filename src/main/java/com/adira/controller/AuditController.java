@@ -73,6 +73,33 @@ public class AuditController {
         return "form";
     }
 
+    @RequestMapping(value = "/{id}/reply", method = RequestMethod.GET)
+    public String findReply(@PathVariable("id") String id, Model model) {
+        Audit audit = auditService.findById(id);
+        Comment comment = null;
+
+        if (audit.getComments() != null) {
+            for (Comment cm : audit.getComments()) {
+                comment = cm;
+            }
+        }
+
+        AuditeeReplyDto auditeeReplyDto = new AuditeeReplyDto();
+        auditeeReplyDto.setAuditId(audit.getId());
+        auditeeReplyDto.setReferenceNo(audit.getReferenceNo());
+        auditeeReplyDto.setPic(audit.getPic());
+        auditeeReplyDto.setAuditIssue(audit.getAuditIssue());
+        auditeeReplyDto.setSubject("TEST EMAIL VIA APLIKASI");
+
+        if (comment != null) {
+            auditeeReplyDto.setComment(comment.getContent());
+            auditeeReplyDto.setFileName(comment.getFileName());
+        }
+
+        model.addAttribute("audit", auditeeReplyDto);
+        return "auditeeReply";
+    }
+
     @RequestMapping(value = "/{id}/delete")
     public String delete(@PathVariable("id") String id) {
         Audit audit = auditRepository.findOne(id);
@@ -97,16 +124,29 @@ public class AuditController {
                 .collect(Collectors.toList());
 
         Audit audit = audits.get(0);
-        Iterator<Comment> commentIterator = audit.getComments().iterator();
-        Comment comment = commentIterator.next();
-
         AuditeeReplyDto replyDto = new AuditeeReplyDto();
-        replyDto.setAuditId(audit.getId());
-        replyDto.setReferenceNo(audit.getReferenceNo());
-        replyDto.setFileName(comment.getFileName());
-        replyDto.setAuditor(audit.getAuditor());
-        replyDto.setPic(audit.getPic());
-        replyDto.setComment(comment.getContent());
+
+        if (audit != null) {
+            Comment comment = null;
+
+            if (audit.getComments() != null) {
+                for (Comment cm : audit.getComments()) {
+                    comment = cm;
+                }
+
+                if (comment != null) {
+                    replyDto.setFileName(comment.getFileName());
+                    replyDto.setComment(comment.getContent());
+                }
+            }
+
+            replyDto.setAuditId(audit.getId());
+            replyDto.setReferenceNo(audit.getReferenceNo());
+            replyDto.setAuditor(audit.getAuditor());
+            replyDto.setPic(audit.getPic());
+
+
+        }
 
         model.addAttribute("audit", replyDto);
 

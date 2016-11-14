@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head lang="en">
+
+    <title>Data Audit</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+    <!--<div th:if="${not #lists.isEmpty(audits)}">-->
+    <div>
+        <form class="form-horizontal" th:action="@{/home}" method="get">
+            <input type="text" placeholder="Reference No" name="referenceNo" />&nbsp;&nbsp;<input type="submit" />
+        </form>
+        <br />
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Reference No</th>
+                <th scope="col">Audit Year</th>
+                <th scope="col">PIC</th>
+                <th scope="col">Auditor</th>
+                <th scope="col">Audit Issue</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="audit : ${audits}">
+                <td th:text="${audit.referenceNo}">referenceNo</td>
+                <td th:text="${audit.auditYear}">tahun audit</td>
+                <td th:text="${audit.pic}">pic</td>
+                <td th:text="${audit.auditor}">auditor</td>
+                <td th:text="${audit.auditIssue}">audit issue</td>
+                <td th:text="${audit.status}">status</td>
+                <td><a th:href="${'/audits/' + audit.id}+ '/reply'">Show Details</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+</body>
+</html>

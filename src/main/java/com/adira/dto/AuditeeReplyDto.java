@@ -11,6 +11,8 @@ public class AuditeeReplyDto {
     private String auditor;
     private String fileName;
     private String comment;
+    private String auditIssue;
+    private String subject;
 
     public AuditeeReplyDto() {
     }
@@ -61,5 +63,21 @@ public class AuditeeReplyDto {
 
     public void setReferenceNo(String referenceNo) {
         this.referenceNo = referenceNo;
+    }
+
+    public String getAuditIssue() {
+        return auditIssue;
+    }
+
+    public void setAuditIssue(String auditIssue) {
+        this.auditIssue = auditIssue;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 }

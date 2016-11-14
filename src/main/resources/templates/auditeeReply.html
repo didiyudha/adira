@@ -10,20 +10,13 @@
 <div class="container">
     <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
     <div>
-    <form action="#" th:action="@{'/auditee/'+${audit.auditId}}" th:object="${audit}" method="post" class="form-horizontal">
+    <form action="#" th:object="${audit}" method="post" class="form-horizontal">
         <input type="hidden" th:field="*{auditId}"/>
 
         <div class="form-group">
             <label class="col-sm-2 control-label">Refenece Number:</label>
             <div class="col-sm-10">
                 <p class="form-control-static" th:text="*{referenceNo}">Refenece Number: </p>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Auditor:</label>
-            <div class="col-sm-10">
-                <p class="form-control-static" th:text="*{auditor}">Refenece Number: </p>
             </div>
         </div>
 
@@ -35,24 +28,42 @@
         </div>
 
         <div class="form-group">
+            <label class="col-sm-2 control-label">Subject:</label>
+            <div class="col-sm-10">
+                <p class="form-control-static" th:text="*{subject}">Subject: </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Audit Issue:</label>
+            <div class="col-sm-10">
+                <p class="form-control-static" th:text="*{auditIssue}">Audit Issue: </p>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="col-sm-2 control-label">Comment:</label>
             <div class="col-sm-10">
-                <p class="form-control-static" th:text="*{comment}">Auditor: </p>
+                <p class="form-control-static" th:text="*{comment}">Comment: </p>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-2 control-label">File:</label>
-            <div class="col-sm-10">
-                <p class="form-control-static">
-                    <a th:href="@{'/download?fileName='+${audit.fileName}}" >Download File</a>
-                </p>
+            <div th:if="${not #lists.isEmpty(audit.fileName)}">
+                <div class="col-sm-10">
+                    <p class="form-control-static">
+                        <a th:href="@{'/download?fileName='+${audit.fileName}}" >Download File</a>
+                    </p>
 
+                </div>
             </div>
         </div>
-
+        <br />
         <div class="row">
-            &nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-default">Done</button>
+            &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-default">Back</button>
+            &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-default">Close</button>
+            &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-default">Reply</button>
         </div>
 
     </form>
