@@ -101,7 +101,7 @@ public class StorageServiceImpl implements StorageService {
 
         switch (documentType.toString().toUpperCase()) {
             case "DATA":
-                rootLocation.resolve(fileName);
+                path = rootLocation.resolve(fileName);
                 break;
             case "AUDITEE":
                 path = auditeePath.resolve(fileName);

@@ -200,7 +200,7 @@ public class WorkbookServiceImpl implements WorkbookService {
 
     @Override
     public void readData(String fileName) throws IOException, ParseException {
-        FileInputStream file = new FileInputStream(storageService.load(fileName, ).toFile());
+        FileInputStream file = new FileInputStream(storageService.load(fileName, DocumentType.DATA).toFile());
         XSSFWorkbook workbook = new XSSFWorkbook(file);
         XSSFSheet sheet = workbook.getSheetAt(0);
 
@@ -249,7 +249,7 @@ public class WorkbookServiceImpl implements WorkbookService {
         }
 
         if (audits != null) auditRepository.save(audits);
-        Files.deleteIfExists(storageService.load(fileName, ));
+        Files.deleteIfExists(storageService.load(fileName, DocumentType.DATA));
 
     }
 
