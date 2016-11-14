@@ -1,10 +1,17 @@
 package com.adira.controller;
 
 import com.adira.dao.AuditRepository;
+import com.adira.dao.UserRepository;
+import com.adira.dto.AuditeeReplyDto;
 import com.adira.entity.Audit;
+import com.adira.entity.Comment;
+import com.adira.entity.User;
 import com.adira.service.audit.AuditService;
+import com.adira.service.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,7 +21,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by didi-realtime on 27/09/16.
@@ -26,6 +35,8 @@ public class AuditController {
     private AuditRepository auditRepository;
     @Autowired
     private AuditService auditService;
+    @Autowired
+    private SecurityService securityService;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -72,5 +83,33 @@ public class AuditController {
         }
 
         return "redirect:/audits";
+    }
+
+    @RequestMapping(value = "/auditeeReply", method = RequestMethod.GET)
+    public String audityReply(Model model) {
+
+        User user = securityService.getUserLogedIn();
+        List<Audit> audits = (List<Audit>) auditRepository.findAll();
+
+        audits = audits
+                    .stream()
+                    .filter(audit -> audit.getComments() != null)
+                .collect(Collectors.toList());
+
+        Audit audit = audits.get(0);
+        Iterator<Comment> commentIterator = audit.getComments().iterator();
+        Comment comment = commentIterator.next();
+
+        AuditeeReplyDto replyDto = new AuditeeReplyDto();
+        replyDto.setAuditId(audit.getId());
+        replyDto.setReferenceNo(audit.getReferenceNo());
+        replyDto.setFileName(comment.getFileName());
+        replyDto.setAuditor(audit.getAuditor());
+        replyDto.setPic(audit.getPic());
+        replyDto.setComment(comment.getContent());
+
+        model.addAttribute("audit", replyDto);
+
+        return "auditeeReply";
     }
 }

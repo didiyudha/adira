@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -97,16 +96,26 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public Path load(String fileName) {
-        return rootLocation.resolve(fileName);
+    public Path load(String fileName, DocumentType documentType) {
+        Path path = null;
+
+        switch (documentType.toString().toUpperCase()) {
+            case "DATA":
+                rootLocation.resolve(fileName);
+                break;
+            case "AUDITEE":
+                path = auditeePath.resolve(fileName);
+                break;
+        }
+        return path;
     }
 
     @Override
-    public Resource loadAsResource(String fileName) {
+    public Resource loadAsResource(String fileName, DocumentType documentType) {
 
         try {
 
-            Path file = load(fileName);
+            Path file = load(fileName, documentType);
             Resource resource = new UrlResource(file.toUri());
 
             if (resource.exists() || resource.isReadable()) {

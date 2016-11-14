@@ -1,10 +1,14 @@
 package com.adira.controller;
 
 import com.adira.entity.Audit;
+import com.adira.enumeration.DocumentType;
 import com.adira.exeption.StorageFileNotFoundException;
 import com.adira.service.storage.StorageService;
 import com.adira.service.workbook.WorkbookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,7 +25,7 @@ import java.util.UUID;
  * Created by didi-realtime on 04/11/16.
  */
 @Controller
-public class FileUploadController {
+public class DocumentController {
 
     @Autowired
     private WorkbookService workbookService;
@@ -29,7 +33,7 @@ public class FileUploadController {
     private final StorageService storageService;
 
     @Autowired
-    public FileUploadController(StorageService storageService) {
+    public DocumentController(StorageService storageService) {
         this.storageService = storageService;
     }
 
@@ -52,5 +56,14 @@ public class FileUploadController {
         }
 
         return "redirect:/audits";
+    }
+
+    @RequestMapping(value = "download", method = RequestMethod.GET)
+    public ResponseEntity<Resource> downloadFile(@RequestParam("fileName") String fileName) {
+        Resource resource = storageService.loadAsResource(fileName, DocumentType.AUDITEE);
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+resource.getFilename()+"\"")
+                .body(resource);
     }
 }

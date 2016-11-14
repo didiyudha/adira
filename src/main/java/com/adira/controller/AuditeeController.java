@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
+import java.util.Date;
 
 /**
  * Created by didiyudha on 10/11/16.
@@ -86,6 +87,8 @@ public class AuditeeController {
         Comment comment = new Comment();
         comment.setContent(auditDto.getComment());
         comment.setFileName(auditeeFile.getOriginalFilename() == null ? null : auditeeFile.getOriginalFilename());
+        comment.setCreatedOn(new Date());
+
         audit.setComments(Sets.newHashSet(comment));
         auditRepository.save(audit);
 
@@ -96,7 +99,7 @@ public class AuditeeController {
             } else {
 
                 StringBuilder sb = new StringBuilder();
-                sb.append("<b>Auditee send you a reply message</b>");
+                sb.append("<html><body><b>Auditee send you a reply message</b></body></html>");
 
                 emailService.sendEmailWithAttachment("kioson.xero@gmail.com", auditeeFile.getOriginalFilename(),
                         sb.toString(), DocumentType.AUDITEE);
