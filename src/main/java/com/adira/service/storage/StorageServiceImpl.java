@@ -36,9 +36,7 @@ public class StorageServiceImpl implements StorageService {
         try {
 
             Files.createDirectory(rootLocation);
-
-            if (!Files.isDirectory(rootLocation))
-                Files.createDirectory(auditeePath);
+            Files.createDirectory(auditeePath);
 
         } catch (IOException e) {
             throw new StorageException("Could not initialize storage", e);
@@ -133,5 +131,6 @@ public class StorageServiceImpl implements StorageService {
     @Override
     public void deleteAll() {
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
+        FileSystemUtils.deleteRecursively(auditeePath.toFile());
     }
 }
